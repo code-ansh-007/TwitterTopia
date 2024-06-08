@@ -7,6 +7,7 @@ import {
   handleUserLogin,
   handleUserSignUp,
 } from "../controllers/user.js";
+import upload from "../middlewares/multer.js";
 
 const router = e.Router();
 
@@ -17,7 +18,7 @@ router.get("/", handleFetchAllUsers);
 router.get("/:userId", handleFetchSingleUser);
 
 // ? SIGNUP ROUTE
-router.post("/register", handleUserSignUp);
+router.post("/register", upload.single("file"), handleUserSignUp);
 
 // ? LOGIN ROUTE
 router.post("/login", handleUserLogin);

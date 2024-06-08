@@ -2,6 +2,7 @@ import User from "../model/User.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
+import cloudinary from "../utils/cloudinaryConfig.js";
 
 export const handleFetchAllUsers = async (req, res, next) => {
   try {
@@ -27,6 +28,13 @@ export const handleFetchSingleUser = async (req, res, next) => {
 export const handleUserSignUp = async (req, res, next) => {
   try {
     const { username, password, confirmPassword } = req.body;
+
+    // ? Cloudinary Profile Image Upload (Optional for the user to upload)
+
+    const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+      resource_type: "image",
+    });
+
     if (!username || !password || !confirmPassword)
       return res.status(400).send("fields missing");
     else {
@@ -38,7 +46,11 @@ export const handleUserSignUp = async (req, res, next) => {
       if (usernameExists)
         return res.status(400).send("username already exists");
       else {
-        const user = new User({ username, password });
+        const user = new User({
+          username,
+          password,
+          profileImageUrl: uploadedFile.secure_url,
+        });
         bcrypt.hash(confirmPassword, 10, (err, hashedPassword) => {
           user.set("password", hashedPassword);
           user.save();
