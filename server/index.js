@@ -26,7 +26,7 @@ connectMongoDB(process.env.MONGODB_URI)
 
 // ? Home route of server
 app.get("/", (req, res) => {
-  return res.send("Welcome");
+  return res.send("Welcome to TweeTopia Server");
 });
 
 // ? Routes
