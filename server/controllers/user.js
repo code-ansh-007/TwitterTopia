@@ -3,6 +3,27 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import "dotenv/config";
 
+export const handleFetchAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log("Error fetching users: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const handleFetchSingleUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ err: "User not found" });
+    return res.status(200).json(user);
+  } catch (error) {
+    console.log("Error fetching user: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
 export const handleUserSignUp = async (req, res, next) => {
   try {
     const { username, password, confirmPassword } = req.body;
@@ -27,7 +48,8 @@ export const handleUserSignUp = async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.log("error while fetching signUp route: ", error);
+    console.log("error signing up user: ", error);
+    return res.status(500).json({ error });
   }
 };
 
@@ -76,6 +98,65 @@ export const handleUserLogin = async (req, res, next) => {
       }
     }
   } catch (error) {
-    console.log("error while fetching signIn route: ", error);
+    console.log("error logging in user: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const handleFollow = async (req, res, next) => {
+  try {
+    const { userId } = req.params; // ? User id of user to be followed;
+    const { followerId } = req.body; // ? User if of the follower i.e. the logged in user
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ err: "User not found" });
+
+    const follower = await User.findById(followerId);
+    if (!follower) return res.status(404).json({ err: "Follower not found" });
+
+    // ? adding the follower to the user's follower array if the user is already not in there
+    if (!user.followers.includes(followerId)) {
+      user.followers.push(followerId);
+      await user.save();
+    }
+
+    // ? adding the user to the followers following array if the user is already not in there
+    if (!follower.following.includes(userId)) {
+      follower.following.push(userId);
+      await follower.save();
+    }
+
+    return res.status(200).json({ msg: "Successfully followed the user" });
+  } catch (error) {
+    console.log("Error following user: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const handleUnfollow = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    const { followerId } = req.body;
+
+    const user = await User.findById(userId);
+    if (!user) return res.status(404).json({ err: "User not found" });
+
+    const follower = await User.findById(followerId);
+    if (!follower) return res.status(404).json({ err: "Follower not found" });
+
+    user.followers = user.followers.filter(
+      (id) => id.toString() !== followerId
+    );
+    await user.save();
+
+    follower.following = follower.following.filter(
+      (id) => id.toString() !== userId
+    );
+    await follower.save();
+
+    return res.status(200).json({ msg: "Successfully unfollowed the user" });
+  } catch (error) {
+    console.log("Error unfollowing user: ", error);
+    return res.status(500).json({ error });
   }
 };

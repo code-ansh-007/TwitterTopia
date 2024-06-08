@@ -1,15 +1,31 @@
 import e from "express";
-import { handleUserLogin, handleUserSignUp } from "../controllers/user.js";
+import {
+  handleFetchAllUsers,
+  handleFetchSingleUser,
+  handleFollow,
+  handleUnfollow,
+  handleUserLogin,
+  handleUserSignUp,
+} from "../controllers/user.js";
 
 const router = e.Router();
 
-router.get("/", (req, res) => {
-  return res.send("Welcome to your profile");
-});
+// ? FETCH ALL THE USERS
+router.get("/", handleFetchAllUsers);
 
-// ? Signup route
+// ! FETCH A SINGLE USER
+router.get("/:userId", handleFetchSingleUser);
+
+// ? SIGNUP ROUTE
 router.post("/register", handleUserSignUp);
 
+// ? LOGIN ROUTE
 router.post("/login", handleUserLogin);
+
+// ? FOLLOW A USER ROUTE
+router.post("/:userId/follow", handleFollow);
+
+// ? UNFOLLOW A USER ROUTE
+router.post("/:userId/unfollow", handleUnfollow);
 
 export default router;
