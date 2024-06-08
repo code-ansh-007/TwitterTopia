@@ -12,6 +12,10 @@ const tweetSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
+    fileUrl: {
+      // ? can be an image or a video
+      type: String,
+    },
   },
   {
     timestamps: true,

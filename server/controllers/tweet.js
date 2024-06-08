@@ -1,12 +1,31 @@
 import Tweet from "../model/Tweet.js";
+import cloudinary from "../utils/cloudinaryConfig.js";
 
 export const handleTweetCreation = async (req, res, next) => {
   try {
     const { message, userId } = req.body;
+    // console.log(req.file);
+
+    if (!req.file) {
+      return res.status(400).json({ err: "File not selected" });
+    }
+
+    let resourceType = "auto";
+    if (req.file.mimetype.startsWith("image/")) {
+      resourceType = "image";
+    } else if (req.file.mimetype.startsWith("video/")) {
+      resourceType = "video";
+    }
+    // ? cloudinary image/video upload code
+    const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+      resource_type: resourceType,
+    });
+    const fileUrl = uploadedFile.secure_url;
+
     if (!message || !userId)
       return res.status(400).json({ err: "Missing Fields" });
     else {
-      const tweet = new Tweet({ message, createdBy: userId });
+      const tweet = new Tweet({ message, createdBy: userId, fileUrl });
       try {
         const savedTweet = await tweet.save();
         res.status(201).json({

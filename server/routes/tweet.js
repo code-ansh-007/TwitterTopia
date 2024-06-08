@@ -6,6 +6,7 @@ import {
   handleTweetDeletion,
   handleTweetUpdation,
 } from "../controllers/tweet.js";
+import upload from "../middlewares/multer.js";
 
 const router = e.Router();
 
@@ -13,7 +14,7 @@ const router = e.Router();
 router.get("/", handleFetchAllTweets);
 
 // ? CREATE A NEW TWEET
-router.post("/create", handleTweetCreation);
+router.post("/create", upload.single("file"), handleTweetCreation);
 
 // ? GET TWEETS POSTED BY USER BY USER ID
 router.get("/:userId", handleGetTweetsOfUser);
