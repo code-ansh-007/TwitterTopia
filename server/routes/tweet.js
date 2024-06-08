@@ -20,7 +20,7 @@ router.post("/create", upload.single("file"), handleTweetCreation);
 router.get("/:userId", handleGetTweetsOfUser);
 
 // ? UPDATE A TWEET BY TWEET ID
-router.patch("/:tweetId", handleTweetUpdation);
+router.patch("/:tweetId", upload.single("file"), handleTweetUpdation);
 
 // ? DELETE A TWEET BY TWEET ID
 router.delete("/:tweetId", handleTweetDeletion);

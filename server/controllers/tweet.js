@@ -68,6 +68,13 @@ export const handleTweetUpdation = async (req, res, next) => {
     const { tweetId } = req.params;
     const { message, userId } = req.body;
 
+    let uploadedFile;
+    if (req.file) {
+      uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+        resource_type: "auto",
+      });
+    }
+
     // ? tweet exists and is authorized update
     const tweet = await Tweet.findById(tweetId);
     if (!tweet) return res.status(404).json({ err: "tweet was not found" });
@@ -76,7 +83,7 @@ export const handleTweetUpdation = async (req, res, next) => {
 
     const updatedTweet = await Tweet.findByIdAndUpdate(
       tweetId,
-      { message },
+      { message, fileUrl: req.file ? uploadedFile.secure_url : tweet.fileUrl },
       { new: true }
     );
     return res.status(200).json(updatedTweet);
