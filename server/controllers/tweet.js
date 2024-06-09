@@ -4,33 +4,36 @@ import cloudinary from "../utils/cloudinaryConfig.js";
 export const handleTweetCreation = async (req, res, next) => {
   try {
     const { message, userId } = req.body;
-    // console.log(req.file);
 
-    if (!req.file) {
-      return res.status(400).json({ err: "File not selected" });
+    let fileUrl;
+    if (req.file) {
+      let resourceType = "auto";
+      if (req.file.mimetype.startsWith("image/")) {
+        resourceType = "image";
+      } else if (req.file.mimetype.startsWith("video/")) {
+        resourceType = "video";
+      }
+      // ? cloudinary image/video upload code
+      const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+        resource_type: resourceType,
+      });
+      fileUrl = uploadedFile.secure_url;
     }
-
-    let resourceType = "auto";
-    if (req.file.mimetype.startsWith("image/")) {
-      resourceType = "image";
-    } else if (req.file.mimetype.startsWith("video/")) {
-      resourceType = "video";
-    }
-    // ? cloudinary image/video upload code
-    const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
-      resource_type: resourceType,
-    });
-    const fileUrl = uploadedFile.secure_url;
 
     if (!message || !userId)
       return res.status(400).json({ err: "Missing Fields" });
     else {
-      const tweet = new Tweet({ message, createdBy: userId, fileUrl });
+      // const tweet = new Tweet({ message, createdBy: userId, fileUrl });
       try {
-        const savedTweet = await tweet.save();
+        // const savedTweet = await tweet.save();
+        const newTweet = await Tweet.create({
+          message,
+          createdAt: userId,
+          fileUrl: req.file ? fileUrl : "",
+        });
         res.status(201).json({
           message: "tweet created successfully",
-          tweet: savedTweet,
+          tweet: newTweet,
         });
       } catch (error) {
         console.log("error creating tweet: ", error);

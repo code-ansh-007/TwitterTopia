@@ -2,6 +2,7 @@ import React, { FC, ComponentType, useState, useEffect } from "react";
 import MobileNavbar from "./MobileNavbar";
 import MobileBottomNav from "./MobileBottomNav";
 import { useLocation } from "react-router-dom";
+import CreateModal from "./modals/CreateModal";
 
 const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
   const WrappedComponent: FC<P> = (props) => {
@@ -12,7 +13,7 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
     }, [url, location.pathname]);
 
     return (
-      <div className="flex flex-col min-h-screen">
+      <div className="flex flex-col min-h-screen relative">
         {/* Top Navbar */}
         {url !== "profile" && <MobileNavbar />}
 
@@ -23,6 +24,7 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
 
         {/* Bottom Navbar */}
         <MobileBottomNav />
+        <CreateModal />
       </div>
     );
   };

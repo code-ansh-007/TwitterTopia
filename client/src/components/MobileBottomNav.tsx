@@ -5,9 +5,11 @@ import { IoSearch } from "react-icons/io5";
 import { MdMailOutline } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import useCreateModalStore from "../utils/zustandStore";
 
 const MobileBottomNav = () => {
   const [selectedTab, setSelectedTab] = useState("home");
+  const { openModal } = useCreateModalStore();
   const navigate = useNavigate();
   return (
     <main className="border-t-[1px] border-neutral-300 p-4">
@@ -28,7 +30,10 @@ const MobileBottomNav = () => {
         <FaFeather
           size={30}
           color={selectedTab === "write" ? "#313233" : "#7d8085"}
-          onClick={() => setSelectedTab("write")}
+          onClick={() => {
+            openModal();
+            setSelectedTab("write");
+          }}
         />
         <MdMailOutline
           size={30}
