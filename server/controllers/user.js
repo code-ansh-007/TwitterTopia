@@ -62,7 +62,7 @@ export const handleUserSignUp = async (req, res, next) => {
         });
         return res
           .status(200)
-          .send("User created Successfully: ", newUser.username);
+          .json({ msg: "User Created Successfully", username });
       }
     }
   } catch (error) {
