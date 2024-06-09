@@ -48,6 +48,7 @@ const SignUp = () => {
           }
         )
         .then((res) => {
+          console.log(res);
           navigate("/user/signin");
         });
     } catch (error) {

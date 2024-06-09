@@ -49,17 +49,16 @@ export const handleUserSignUp = async (req, res, next) => {
       if (usernameExists)
         return res.status(400).send("username already exists");
       else {
-        const user = new User({
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(confirmPassword, salt);
+        const newUser = await User.create({
           username,
-          password,
+          password: hashedPassword,
           profileImageUrl: req.file ? uploadedFile.secure_url : "",
         });
-        bcrypt.hash(confirmPassword, 10, async (err, hashedPassword) => {
-          user.set("password", hashedPassword);
-          await user.save();
-          // next();
-        });
-        return res.status(200).send("User created Successfully");
+        return res
+          .status(200)
+          .send("User created Successfully: ", newUser.username);
       }
     }
   } catch (error) {
