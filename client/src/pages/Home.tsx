@@ -25,7 +25,7 @@ const Home = () => {
       {tweets?.map((tweet, ind) => {
         return (
           <div key={ind}>
-            <TweetCard />
+            <TweetCard tweet={tweet} />
           </div>
         );
       })}
