@@ -31,9 +31,12 @@ export const handleUserSignUp = async (req, res, next) => {
 
     // ? Cloudinary Profile Image Upload (Optional for the user to upload)
 
-    const uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
-      resource_type: "image",
-    });
+    let uploadedFile;
+    if (req.file) {
+      uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+        resource_type: "image",
+      });
+    }
 
     if (!username || !password || !confirmPassword)
       return res.status(400).send("fields missing");
@@ -49,7 +52,7 @@ export const handleUserSignUp = async (req, res, next) => {
         const user = new User({
           username,
           password,
-          profileImageUrl: uploadedFile.secure_url,
+          profileImageUrl: req.file ? uploadedFile.secure_url : "",
         });
         bcrypt.hash(confirmPassword, 10, (err, hashedPassword) => {
           user.set("password", hashedPassword);

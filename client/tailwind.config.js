@@ -2,7 +2,12 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        playball: ["Playball", "cursive"],
+        mont: ["Montserrat", "sans-serif"],
+      },
+    },
   },
   plugins: [],
 };

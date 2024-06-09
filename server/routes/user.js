@@ -14,7 +14,7 @@ const router = e.Router();
 // ? FETCH ALL THE USERS
 router.get("/", handleFetchAllUsers);
 
-// ! FETCH A SINGLE USER
+// ? FETCH A SINGLE USER
 router.get("/:userId", handleFetchSingleUser);
 
 // ? SIGNUP ROUTE
