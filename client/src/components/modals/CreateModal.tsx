@@ -123,6 +123,9 @@ const CreateModal = () => {
               onChange={handleFileInputChange}
             />
           </div>
+          {selectedFile && (
+            <span className="text-green-500 text-sm">Media selected</span>
+          )}
         </div>
         <button
           type="submit"

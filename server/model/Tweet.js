@@ -16,6 +16,9 @@ const tweetSchema = new mongoose.Schema(
       // ? can be an image or a video
       type: String,
     },
+    fileType: {
+      type: String,
+    },
   },
   {
     timestamps: true,
