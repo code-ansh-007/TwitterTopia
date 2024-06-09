@@ -22,8 +22,12 @@ const Home = () => {
   }, []);
   return (
     <main>
-      {tweets?.map((tweet) => {
-        return <TweetCard />;
+      {tweets?.map((tweet, ind) => {
+        return (
+          <div key={ind}>
+            <TweetCard />
+          </div>
+        );
       })}
     </main>
   );
