@@ -57,7 +57,7 @@ const SignUp = () => {
 
   return (
     <form className="p-2 flex flex-col items-center" onSubmit={handleSignUp}>
-      <div className="w-full">
+      <div className="w-full" onClick={() => navigate("/")}>
         <GoArrowLeft size={30} className="text-neutral-600" />
       </div>
       <div className="flex flex-col items-center justify-center h-screen w-full px-5 gap-3">
@@ -107,12 +107,11 @@ const SignUp = () => {
           <span className="text-blue-400 font-semibold">
             Profile Photo(Optional)
           </span>
-          <div className="w-full border-blue-400 border-[1.5px] bg-blue-100 rounded-md p-2 flex items-center justify-center">
-            <FaCamera
-              size={30}
-              className="text-blue-400"
-              onClick={handleCameraClick}
-            />
+          <div
+            onClick={handleCameraClick}
+            className="w-full border-blue-400 border-[1.5px] bg-blue-100 rounded-md p-2 flex items-center justify-center"
+          >
+            <FaCamera size={30} className="text-blue-400" />
           </div>
           <input
             ref={fileInputRef}
@@ -126,7 +125,7 @@ const SignUp = () => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-400 text-white p-3 rounded-md mt-5"
+          className="w-full bg-blue-400 text-white p-3 rounded-md mt-5 active:scale-110 transition transform duration-300"
         >
           Sign Up
         </button>

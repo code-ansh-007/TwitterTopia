@@ -57,7 +57,7 @@ export const handleUserSignUp = async (req, res, next) => {
         bcrypt.hash(confirmPassword, 10, (err, hashedPassword) => {
           user.set("password", hashedPassword);
           user.save();
-          next();
+          // next();
         });
         return res.status(200).send("User created Successfully");
       }
