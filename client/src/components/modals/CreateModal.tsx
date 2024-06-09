@@ -1,18 +1,73 @@
-import React, { FormEvent, useState } from "react";
+import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
 import { MdPhotoCamera } from "react-icons/md";
 import { FaVideo } from "react-icons/fa";
 import useCreateModalStore from "../../utils/zustandStore";
 import { IoMdClose } from "react-icons/io";
+import toast, { Toaster } from "react-hot-toast";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Loader from "../Loader";
 
 const CreateModal = () => {
   const { isModalOpen, closeModal } = useCreateModalStore();
+  const user = JSON.parse(localStorage.getItem("user:details") || "");
   const [message, setMessage] = useState<string>("");
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const [showLoader, setShowLoader] = useState<boolean>(false);
 
   if (!isModalOpen) return null;
 
   const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      if (!message) {
+        toast("Missing message!", { icon: "❌" });
+        return;
+      }
+      setShowLoader(true);
+      const formData = new FormData();
+      formData.append("message", message);
+      formData.append("userId", user.userId);
+      if (selectedFile) {
+        formData.append("file", selectedFile);
+      }
+      await axios
+        .post(
+          "https://twitter-topia-one.vercel.app/api/tweet/create",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Tweet created successfully");
+          toast("Tweet Created Successfully");
+          closeModal();
+          navigate("/");
+          setShowLoader(false);
+        });
+    } catch (error) {
+      console.log("Error while creating post: ", error);
+      toast("Internal Server Error", { icon: "⚠️" });
+    }
   };
+
+  const handleMediaClick = () => {
+    fileInputRef?.current?.click();
+  };
+
+  const handleFileInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const file = e.target.files[0];
+      console.log(file);
+      setSelectedFile(file);
+    }
+  };
+
   return (
     <main className="h-full bg-neutral-500 bg-opacity-40 absolute w-full flex flex-col items-center justify-center px-6">
       <form
@@ -40,6 +95,8 @@ const CreateModal = () => {
             className=" border-[2px] rounded-md p-1 text-sm outline-none"
             rows={4}
             placeholder="Once upon a time..."
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
           ></textarea>
         </div>
         <div className="flex flex-col gap-1">
@@ -47,21 +104,35 @@ const CreateModal = () => {
             Media(optional)
           </label>
           <div className="flex flex-row items-center gap-4">
-            <div className="border-[2px] rounded-md border-blue-500 w-fit p-1 bg-blue-200">
+            <div
+              onClick={handleMediaClick}
+              className="border-[2px] rounded-md border-blue-500 w-fit p-1 bg-blue-200"
+            >
               <MdPhotoCamera size={32} className="text-blue-500" />
             </div>
-            <div className="border-[2px] rounded-md border-orange-500 w-fit p-1 bg-orange-200">
+            <div
+              onClick={handleMediaClick}
+              className="border-[2px] rounded-md border-orange-500 w-fit p-1 bg-orange-200"
+            >
               <FaVideo size={32} className="text-orange-500" />
             </div>
+            <input
+              ref={fileInputRef}
+              type="file"
+              hidden
+              onChange={handleFileInputChange}
+            />
           </div>
         </div>
         <button
           type="submit"
-          className="bg-blue-400 p-2 rounded-md text-white font-semibold mt-5"
+          className="bg-blue-500 p-2 rounded-md text-white font-semibold mt-5 active:scale-110 transition transform duration-300 flex flex-row items-center justify-center gap-2"
         >
-          Post
+          <span>Post</span>
+          {showLoader && <Loader color="white" size={26} />}
         </button>
       </form>
+      <Toaster />
     </main>
   );
 };

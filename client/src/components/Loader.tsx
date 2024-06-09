@@ -1,13 +1,17 @@
 import React from "react";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-const Loader = () => {
+interface LoaderProps {
+  color?: string | "blue-500";
+  size?: number | 24;
+}
+
+const Loader = ({ color, size }: LoaderProps) => {
   return (
     <>
       <AiOutlineLoading3Quarters
-        size={24}
-        className="animate-spin"
-        color="#4287f5"
+        size={size}
+        className={`animate-spin text-${color?.toString()}`}
       />
     </>
   );

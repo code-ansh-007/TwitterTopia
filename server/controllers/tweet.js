@@ -23,9 +23,7 @@ export const handleTweetCreation = async (req, res, next) => {
     if (!message || !userId)
       return res.status(400).json({ err: "Missing Fields" });
     else {
-      // const tweet = new Tweet({ message, createdBy: userId, fileUrl });
       try {
-        // const savedTweet = await tweet.save();
         const newTweet = await Tweet.create({
           message,
           createdBy: userId,
