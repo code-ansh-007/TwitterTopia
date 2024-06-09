@@ -46,6 +46,17 @@ export const handleTweetCreation = async (req, res, next) => {
   }
 };
 
+export const handleGetTweetWithID = async (req, res, next) => {
+  try {
+    const { tweetId } = req.params;
+    const tweet = await Tweet.findById(tweetId);
+    return res.status(200).json(tweet);
+  } catch (error) {
+    console.log("Error fetching tweet: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
 export const handleFetchAllTweets = async (req, res, next) => {
   try {
     const tweets = await Tweet.find()

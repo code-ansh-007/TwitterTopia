@@ -13,6 +13,9 @@ const router = e.Router();
 // ? GET ALL THE TWEETS
 router.get("/", handleFetchAllTweets);
 
+// ? GET A TWEET WITH TWEET ID
+router.get("/:tweetId", handleGetTweetWithID);
+
 // ? CREATE A NEW TWEET
 router.post("/create", upload.single("file"), handleTweetCreation);
 
