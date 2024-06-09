@@ -1,4 +1,10 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { MdPhotoCamera } from "react-icons/md";
 import { FaVideo } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
@@ -9,7 +15,8 @@ import Loader from "../Loader";
 import useUpdateModalStore from "../../utils/updateModalStore";
 
 const UpdateModal = () => {
-  const { isModalOpen, closeModal, tweetId } = useUpdateModalStore();
+  const { closeModal, tweetId } = useUpdateModalStore();
+
   const navigate = useNavigate();
   let user: any;
   if (localStorage.getItem("user:details")) {
@@ -19,46 +26,60 @@ const UpdateModal = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [showLoader, setShowLoader] = useState<boolean>(false);
-  if (!isModalOpen) return null;
+  const fetchPost = async () => {
+    try {
+      const res = await axios.get(
+        `https://twitter-topia-one.vercel.app/api/tweet/single/${tweetId}`
+      );
+      if (res.data) {
+        console.log(res.data);
+        setMessage(res.data.message);
+      }
+    } catch (error) {
+      console.log("error while fething post from the client: ", error);
+    }
+  };
 
-  //   const handleCreate = async (e: FormEvent<HTMLFormElement>) => {
-  //     e.preventDefault();
-  //     try {
-  //       if (!message) {
-  //         toast("Missing message!", { icon: "❌" });
-  //         return;
-  //       }
-  //       setShowLoader(true);
-  //       const formData = new FormData();
-  //       formData.append("message", message);
-  //       formData.append("userId", user.userId);
-  //       if (selectedFile) {
-  //         formData.append("file", selectedFile);
-  //       }
-  //       await axios
-  //         .post(
-  //           "https://twitter-topia-one.vercel.app/api/tweet/create",
-  //           formData,
-  //           {
-  //             headers: {
-  //               "Content-Type": "multipart/form-data",
-  //             },
-  //           }
-  //         )
-  //         .then((res) => {
-  //           console.log("Tweet created successfully");
-  //           toast("Tweet Created Successfully");
-  //           closeModal();
-  //           navigate("/");
-  //           setShowLoader(false);
-  //         });
-  //     } catch (error) {
-  //       console.log("Error while creating post: ", error);
-  //       toast("Internal Server Error", { icon: "⚠️" });
-  //     }
-  //   };
+  useEffect(() => {
+    fetchPost();
+  }, []);
 
-  const handleUpdate = async () => {};
+  const handleUpdate = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      if (!message) {
+        toast("Missing message!", { icon: "❌" });
+        return;
+      }
+      setShowLoader(true);
+      const formData = new FormData();
+      formData.append("message", message);
+      formData.append("userId", user.userId);
+      if (selectedFile) {
+        formData.append("file", selectedFile);
+      }
+      await axios
+        .patch(
+          `https://twitter-topia-one.vercel.app/api/tweet/${tweetId}`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((res) => {
+          console.log("Tweet updated successfully");
+          toast("Tweet Updated Successfully");
+          closeModal();
+          navigate("/");
+          setShowLoader(false);
+        });
+    } catch (error) {
+      console.log("Error while updating post: ", error);
+      toast("Internal Server Error", { icon: "⚠️" });
+    }
+  };
 
   const handleMediaClick = () => {
     fileInputRef?.current?.click();
@@ -80,7 +101,7 @@ const UpdateModal = () => {
       >
         <div className="flex w-full  border-b-[1px] border-neutral-300">
           <span className="font-playball font-semibold text-xl text-blue-400 w-full">
-            Create a Tweet
+            Update Tweet
           </span>
           <IoMdClose
             size={26}
@@ -90,7 +111,7 @@ const UpdateModal = () => {
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="message" className="text-neutral-500">
-            Message
+            Update Message
           </label>
           <textarea
             spellCheck={false}
@@ -105,7 +126,7 @@ const UpdateModal = () => {
         </div>
         <div className="flex flex-col gap-1">
           <label htmlFor="message" className="text-neutral-500">
-            Media(optional)
+            Select New Media(optional)
           </label>
           <div className="flex flex-row items-center gap-4">
             <div

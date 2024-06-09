@@ -3,11 +3,14 @@ import MobileNavbar from "./MobileNavbar";
 import MobileBottomNav from "./MobileBottomNav";
 import { useLocation } from "react-router-dom";
 import CreateModal from "./modals/CreateModal";
+import UpdateModal from "./modals/UpdateModal";
+import useUpdateModalStore from "../utils/updateModalStore";
 
 const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
   const WrappedComponent: FC<P> = (props) => {
     const [url, setUrl] = useState<string>("");
     const location = useLocation();
+    const { isModalOpen } = useUpdateModalStore();
     useEffect(() => {
       if (location.pathname === "/user/profile") setUrl("profile");
       else if (location.pathname === "/user/notifications") setUrl("mail");
@@ -33,6 +36,7 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
         {/* Bottom Navbar */}
         <MobileBottomNav />
         <CreateModal />
+        {isModalOpen && <UpdateModal />}
       </div>
     );
   };
