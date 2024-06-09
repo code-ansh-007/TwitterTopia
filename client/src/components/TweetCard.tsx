@@ -19,7 +19,7 @@ const TweetCard = ({ tweet }: any) => {
   }, []);
 
   return (
-    <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4">
+    <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4 w-full">
       <div className="flex flex-row items-center  gap-3 justify-between">
         <div className="flex flex-row items-center gap-3">
           <img

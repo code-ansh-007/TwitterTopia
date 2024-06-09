@@ -6,7 +6,7 @@ interface HomeTabStore {
 }
 
 const useHomeTabStore = create<HomeTabStore>((set: any) => ({
-  selectedTab: "",
+  selectedTab: "for-you",
   selectTab: (tab: string) => set({ selectedTab: tab }),
 }));
 

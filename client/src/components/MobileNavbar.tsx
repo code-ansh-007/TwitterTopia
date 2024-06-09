@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Loader from "./Loader";
 import { useNavigate } from "react-router-dom";
+import useHomeTabStore from "../utils/homtTabStore";
 
 const MobileNavbar = () => {
-  const [selectedTab, setSelectedTab] = useState("for-you");
+  const { selectTab, selectedTab } = useHomeTabStore();
   //  !!!!!!!!
   const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
   const navigate = useNavigate();
@@ -37,7 +38,7 @@ const MobileNavbar = () => {
               ? "border-b-[4px] border-blue-400"
               : "border-b-[4px] border-transparent"
           }`}
-          onClick={() => setSelectedTab("for-you")}
+          onClick={() => selectTab("for-you")}
         >
           For You
         </span>
@@ -47,7 +48,7 @@ const MobileNavbar = () => {
               ? "border-b-[4px] border-blue-400"
               : "border-b-[4px] border-transparent"
           }`}
-          onClick={() => setSelectedTab("following")}
+          onClick={() => selectTab("following")}
         >
           Following
         </span>
@@ -57,7 +58,7 @@ const MobileNavbar = () => {
               ? "border-b-[4px] border-blue-400"
               : "border-b-[4px] border-transparent"
           } `}
-          onClick={() => setSelectedTab("discover")}
+          onClick={() => selectTab("discover")}
         >
           Your Posts
         </span>
