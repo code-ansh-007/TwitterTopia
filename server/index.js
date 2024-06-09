@@ -10,7 +10,13 @@ const app = e();
 const PORT = process.env.PORT || 8000;
 
 // ? middlewares
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  })
+);
 app.use(e.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(e.json());

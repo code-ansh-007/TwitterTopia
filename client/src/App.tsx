@@ -5,8 +5,10 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import Profile from "./pages/Profile";
 import ProtectedRoute from "./components/ProtectedRoute";
+import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials = true;
   return (
     <>
       <BrowserRouter>
