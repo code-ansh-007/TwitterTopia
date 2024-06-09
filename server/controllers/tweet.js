@@ -47,7 +47,7 @@ export const handleFetchAllTweets = async (req, res, next) => {
   try {
     const tweets = await Tweet.find().populate({
       path: "createdBy",
-      select: "username, profileImageUrl",
+      select: "username profileImageUrl",
     });
     return res.status(200).json(tweets);
   } catch (error) {
