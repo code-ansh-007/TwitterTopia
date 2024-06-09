@@ -33,9 +33,13 @@ export const handleUserSignUp = async (req, res, next) => {
 
     let uploadedFile;
     if (req.file) {
-      uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
-        resource_type: "image",
-      });
+      try {
+        uploadedFile = await cloudinary.v2.uploader.upload(req.file.path, {
+          resource_type: "image",
+        });
+      } catch (error) {
+        console.log("Error uploading image to cloudinary: ", error);
+      }
     }
 
     if (!username || !password || !confirmPassword)
