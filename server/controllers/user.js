@@ -108,6 +108,7 @@ export const handleUserLogin = async (req, res, next) => {
               user: {
                 userId: user._id,
                 username,
+                profileImageUrl: user.profileImageUrl,
               },
               token,
             });
