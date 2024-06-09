@@ -26,7 +26,10 @@ const MobileBottomNav = () => {
         <IoSearch
           size={32}
           color={selectedTab === "search" ? "#313233" : "#7d8085"}
-          onClick={() => setSelectedTab("search")}
+          onClick={() => {
+            navigate("/user/search");
+            setSelectedTab("search");
+          }}
         />
         <FaFeather
           size={30}
@@ -43,7 +46,14 @@ const MobileBottomNav = () => {
         <MdMailOutline
           size={30}
           color={selectedTab === "mail" ? "#313233" : "#7d8085"}
-          onClick={() => setSelectedTab("mail")}
+          onClick={() => {
+            const isLoggedIn = localStorage.getItem("user:token") !== null;
+            if (!isLoggedIn) navigate("/user/signup");
+            else {
+              navigate("/user/notifications");
+              setSelectedTab("mail");
+            }
+          }}
         />
         <FaRegUser
           size={27}

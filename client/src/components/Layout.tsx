@@ -10,12 +10,16 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
     const location = useLocation();
     useEffect(() => {
       if (location.pathname === "/user/profile") setUrl("profile");
+      else if (location.pathname === "/user/notifications") setUrl("mail");
+      else if (location.pathname === "/user/search") setUrl("search");
     }, [url, location.pathname]);
 
     return (
       <div className="flex flex-col min-h-screen relative">
         {/* Top Navbar */}
-        {url !== "profile" && <MobileNavbar />}
+        <div hidden={url === "profile" || url === "mail" || url === "search"}>
+          <MobileNavbar />
+        </div>
 
         {/* Main Content */}
         <div
