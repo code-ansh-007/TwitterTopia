@@ -130,6 +130,12 @@ const SignUp = () => {
         >
           Sign Up
         </button>
+        <span>
+          Already have an account?{" "}
+          <a href="/user/signin" className="text-blue-500">
+            Sign In
+          </a>
+        </span>
       </div>
     </form>
   );
