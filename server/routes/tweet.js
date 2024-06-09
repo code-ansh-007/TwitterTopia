@@ -1,6 +1,7 @@
 import e from "express";
 import {
   handleFetchAllTweets,
+  handleGetTweetWithID,
   handleGetTweetsOfUser,
   handleTweetCreation,
   handleTweetDeletion,
