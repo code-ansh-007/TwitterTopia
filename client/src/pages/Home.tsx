@@ -21,7 +21,7 @@ const Home = () => {
     fetchAllTweets();
   }, []);
   return (
-    <main>
+    <main className="flex flex-col gap-8">
       {tweets?.map((tweet, ind) => {
         return (
           <div key={ind}>

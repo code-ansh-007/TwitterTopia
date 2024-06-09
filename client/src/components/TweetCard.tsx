@@ -1,13 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 
 const TweetCard = ({ tweet }: any) => {
   const userPic = tweet.createdBy.profileImageUrl;
   const username = tweet.createdBy.username;
   const tweetMedia = tweet.fileUrl;
+  const message = tweet.message;
   const [lineClamp, setLineClamp] = useState(true);
+  const [mediaType, setMediaType] = useState("");
+
+  const checkMediaType = (tweetMedia: string) => {
+    if (tweetMedia.endsWith(".jpg")) setMediaType("image");
+    else setMediaType("video");
+  };
+
+  useEffect(() => {
+    checkMediaType(tweetMedia);
+  }, []);
+
   return (
-    <main className="flex flex-col gap-2">
+    <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4">
       <div className="flex flex-row items-center  gap-3 justify-between">
         <div className="flex flex-row items-center gap-3">
           <img
@@ -23,13 +35,25 @@ const TweetCard = ({ tweet }: any) => {
         className={`text-sm  ${lineClamp ? "line-clamp-3" : ""}`}
         onClick={() => setLineClamp(!lineClamp)}
       >
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique
-        ducimus fugit minus, a quaerat ut enim officiis deserunt autem
-        cupiditate labore dolores. Perspiciatis dolor possimus explicabo
-        delectus tempora amet modi ipsa, minus nisi quidem rem asperiores aut in
-        itaque doloribus earum, non vel laudantium ab.
+        {message}
       </span>
-      {/* {tweetMedia !== "" &&  } */}
+      {tweetMedia !== "" && mediaType === "image" ? (
+        <img
+          src={tweetMedia}
+          alt="tweet media"
+          className="rounded-lg max-w-[400px] w-full"
+        />
+      ) : (
+        tweetMedia !== "" && (
+          <video
+            src={tweetMedia}
+            controls
+            autoPlay
+            muted
+            className="rounded-lg"
+          ></video>
+        )
+      )}
     </main>
   );
 };

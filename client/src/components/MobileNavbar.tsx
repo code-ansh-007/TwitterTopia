@@ -7,7 +7,7 @@ const MobileNavbar = () => {
   const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
   const navigate = useNavigate();
   return (
-    <main className="flex flex-col p-4 items-center gap-7 border-b-[1px] border-neutral-300 pb-0">
+    <main className="flex flex-col mb-2 p-4 items-center gap-7 border-b-[1px] border-neutral-300 pb-0 sticky top-0 bg-white">
       <div className="flex flex-row items-center w-full">
         <div className="w-[38%]" onClick={() => navigate("/user/profile")}>
           <img

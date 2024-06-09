@@ -12,7 +12,7 @@ const MobileBottomNav = () => {
   const { openModal } = useCreateModalStore();
   const navigate = useNavigate();
   return (
-    <main className="border-t-[1px] border-neutral-300 p-4">
+    <main className="border-t-[1px] border-neutral-300 p-4 sticky bottom-0 bg-white">
       <div className="flex flex-row items-center justify-between">
         <GrHomeRounded
           size={28}

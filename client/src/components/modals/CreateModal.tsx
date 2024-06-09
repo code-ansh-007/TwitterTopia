@@ -69,7 +69,7 @@ const CreateModal = () => {
   };
 
   return (
-    <main className="h-full bg-neutral-500 bg-opacity-40 absolute w-full flex flex-col items-center justify-center px-6">
+    <main className=" fixed inset-0 bg-neutral-500 bg-opacity-40  w-full flex flex-col items-center justify-center px-6">
       <form
         onSubmit={handleCreate}
         className="flex bg-white rounded-md w-full p-2 flex-col gap-2"

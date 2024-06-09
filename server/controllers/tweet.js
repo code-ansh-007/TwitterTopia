@@ -7,7 +7,7 @@ export const handleTweetCreation = async (req, res, next) => {
 
     let fileUrl;
     let resourceType;
-    console.log(req.file);
+    // console.log(req.file);
     if (req.file) {
       resourceType = "auto";
       if (req.file.mimetype.startsWith("image/")) {
@@ -48,10 +48,12 @@ export const handleTweetCreation = async (req, res, next) => {
 
 export const handleFetchAllTweets = async (req, res, next) => {
   try {
-    const tweets = await Tweet.find().populate({
-      path: "createdBy",
-      select: "username profileImageUrl",
-    });
+    const tweets = await Tweet.find()
+      .populate({
+        path: "createdBy",
+        select: "username profileImageUrl",
+      })
+      .sort({ createdAt: -1 });
     return res.status(200).json(tweets);
   } catch (error) {
     console.log("Error fetching tweets: ", error);
