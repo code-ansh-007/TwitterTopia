@@ -7,6 +7,7 @@ export const handleTweetCreation = async (req, res, next) => {
 
     let fileUrl;
     let resourceType;
+    console.log(req.file);
     if (req.file) {
       resourceType = "auto";
       if (req.file.mimetype.startsWith("image/")) {
@@ -29,7 +30,7 @@ export const handleTweetCreation = async (req, res, next) => {
           message,
           createdBy: userId,
           fileUrl: req.file ? fileUrl : "",
-          fileUrl: req.file ? resourceType : "",
+          fileType: req.file ? resourceType : "",
         });
         res.status(201).json({
           message: "tweet created successfully",
