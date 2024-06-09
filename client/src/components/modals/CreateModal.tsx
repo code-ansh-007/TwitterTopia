@@ -10,11 +10,14 @@ import Loader from "../Loader";
 
 const CreateModal = () => {
   const { isModalOpen, closeModal } = useCreateModalStore();
-  const user = JSON.parse(localStorage.getItem("user:details") || "");
+  const navigate = useNavigate();
+  let user: any;
+  if (localStorage.getItem("user:details")) {
+    user = JSON.parse(localStorage.getItem("user:details") || "");
+  }
   const [message, setMessage] = useState<string>("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const navigate = useNavigate();
   const [showLoader, setShowLoader] = useState<boolean>(false);
 
   if (!isModalOpen) return null;

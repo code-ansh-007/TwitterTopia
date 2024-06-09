@@ -18,7 +18,11 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
         {url !== "profile" && <MobileNavbar />}
 
         {/* Main Content */}
-        <div className="flex-grow container mx-auto p-4">
+        <div
+          className={`flex-grow container mx-auto ${
+            location.pathname === "/user/profile" ? "p-0" : "p-4"
+          }`}
+        >
           <Component {...props} />
         </div>
 

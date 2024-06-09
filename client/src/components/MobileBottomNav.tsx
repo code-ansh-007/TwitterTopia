@@ -11,6 +11,7 @@ const MobileBottomNav = () => {
   const [selectedTab, setSelectedTab] = useState("home");
   const { openModal } = useCreateModalStore();
   const navigate = useNavigate();
+  const user = localStorage.getItem("user:details");
   return (
     <main className="border-t-[1px] border-neutral-300 p-4 sticky bottom-0 bg-white">
       <div className="flex flex-row items-center justify-between">
@@ -31,6 +32,10 @@ const MobileBottomNav = () => {
           size={30}
           color={selectedTab === "write" ? "#313233" : "#7d8085"}
           onClick={() => {
+            if (!user) {
+              navigate("/user/signin");
+              return;
+            }
             openModal();
             setSelectedTab("write");
           }}
