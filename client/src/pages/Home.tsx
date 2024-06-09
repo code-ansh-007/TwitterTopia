@@ -1,8 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
+import axios from "axios";
+import TweetCard from "../components/TweetCard";
 
 const Home = () => {
-  return <div>this is Home</div>;
+  const [tweets, setTweets] = useState<any[]>([]);
+
+  const fetchAllTweets = async () => {
+    try {
+      const res = await axios.get(
+        "https://twitter-topia-one.vercel.app/api/tweet/"
+      );
+      setTweets(res.data);
+    } catch (error) {
+      console.log("error fetching tweets from client", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllTweets();
+  }, []);
+  return (
+    <main>
+      {tweets?.map((tweet) => {
+        return <TweetCard />;
+      })}
+    </main>
+  );
 };
 
 export default Layout(Home);

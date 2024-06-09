@@ -45,7 +45,7 @@ export const handleTweetCreation = async (req, res, next) => {
 
 export const handleFetchAllTweets = async (req, res, next) => {
   try {
-    const tweets = await Tweet.find();
+    const tweets = await Tweet.find().populate("createdBy");
     return res.status(200).json(tweets);
   } catch (error) {
     console.log("Error fetching tweets: ", error);

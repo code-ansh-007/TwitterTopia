@@ -49,7 +49,7 @@ const MobileNavbar = () => {
           } `}
           onClick={() => setSelectedTab("discover")}
         >
-          Discover
+          Your Posts
         </span>
       </div>
       {/* <Loader /> */}
