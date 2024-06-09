@@ -28,7 +28,7 @@ export const handleTweetCreation = async (req, res, next) => {
         // const savedTweet = await tweet.save();
         const newTweet = await Tweet.create({
           message,
-          createdAt: userId,
+          createdBy: userId,
           fileUrl: req.file ? fileUrl : "",
         });
         res.status(201).json({
