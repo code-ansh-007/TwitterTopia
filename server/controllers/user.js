@@ -54,9 +54,9 @@ export const handleUserSignUp = async (req, res, next) => {
           password,
           profileImageUrl: req.file ? uploadedFile.secure_url : "",
         });
-        bcrypt.hash(confirmPassword, 10, (err, hashedPassword) => {
+        bcrypt.hash(confirmPassword, 10, async (err, hashedPassword) => {
           user.set("password", hashedPassword);
-          user.save();
+          await user.save();
           // next();
         });
         return res.status(200).send("User created Successfully");
