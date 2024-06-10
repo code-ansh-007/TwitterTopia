@@ -50,7 +50,13 @@ const MobileNavbar = () => {
               ? "border-b-[4px] border-blue-400"
               : "border-b-[4px] border-transparent"
           }`}
-          onClick={() => selectTab("following")}
+          onClick={() => {
+            if (!user) {
+              navigate("/user/signin");
+              return;
+            }
+            selectTab("following");
+          }}
         >
           Following
         </span>
@@ -60,7 +66,13 @@ const MobileNavbar = () => {
               ? "border-b-[4px] border-blue-400"
               : "border-b-[4px] border-transparent"
           } `}
-          onClick={() => selectTab("discover")}
+          onClick={() => {
+            if (!user) {
+              navigate("/user/signin");
+              return;
+            }
+            selectTab("discover");
+          }}
         >
           Your Posts
         </span>

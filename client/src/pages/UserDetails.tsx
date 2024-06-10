@@ -31,7 +31,6 @@ const UserDetails = () => {
       const res = await axios.get(
         `https://twitter-topia-one.vercel.app/api/user/${userId}`
       );
-      // console.log(res.data.followers.includes("666539d2570c70d1ae451a44"));
       setCompUser(res.data);
     } catch (error) {
       console.log("error while fetching user details: ", error);
@@ -44,12 +43,16 @@ const UserDetails = () => {
   }, []);
 
   const followUser = async () => {
+    if (!user) {
+      navigate("/user/signin");
+      return;
+    }
     try {
       await axios
         .post(
           `https://twitter-topia-one.vercel.app/api/user/${compUser?._id}/follow`,
           {
-            followerId: user.userId,
+            followerId: user?.userId,
           }
         )
         .then((res) => {
@@ -62,12 +65,16 @@ const UserDetails = () => {
   };
 
   const unfollowUser = async () => {
+    if (!user) {
+      navigate("/user/signin");
+      return;
+    }
     try {
       await axios
         .post(
           `https://twitter-topia-one.vercel.app/api/user/${compUser?._id}/unfollow`,
           {
-            followerId: user.userId,
+            followerId: user?.userId,
           }
         )
         .then((res) => {
@@ -80,7 +87,7 @@ const UserDetails = () => {
   };
 
   return (
-    <main className="relative w-full md:max-w-[50vw]">
+    <main className="relative w-full md:max-w-[50vw] mb-[100px]">
       <div className="w-full h-[150px] overflow-hidden relative">
         <img
           src="/profile-bg.jpg"
@@ -90,7 +97,11 @@ const UserDetails = () => {
       </div>
       <div className="absolute top-[80px] right-2 md:right-5">
         <img
-          src={compUser?.profileImageUrl}
+          src={
+            compUser?.profileImageUrl
+              ? compUser?.profileImageUrl
+              : "/placeholder.png"
+          }
           alt="profile pic"
           className="w-32  md:w-40 md:h-40 h-32 rounded-full shadow-md"
         />
@@ -111,21 +122,21 @@ const UserDetails = () => {
           </div>
         </div>
       </section>
-      {compUser?._id !== user.userId && (
+      {compUser?._id !== user?.userId && (
         <div className="mt-4 px-2 w-full">
           {compUser?.followers?.some((follower: any) =>
-            follower._id.includes(user.userId)
+            follower._id.includes(user?.userId)
           ) ? (
             <button
               onClick={unfollowUser}
-              className="bg-red-500 text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
+              className="bg-red-500 outline-none text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
             >
               Unfollow
             </button>
           ) : (
             <button
               onClick={followUser}
-              className="bg-blue-500 text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
+              className="bg-blue-500 outline-none text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
             >
               Follow
             </button>
