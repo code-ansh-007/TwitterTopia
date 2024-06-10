@@ -28,7 +28,7 @@ If you want to check out the application at the ground level you may want to clo
 - Go to sub-directory "server" - Install dependencies `npm install`
 - Open two terminals one for "server" and one for "client" run command `npm run dev` to start the development server and run command `npm start` to start the front-end development server
 
-The client side had no environment variable, however the server has a view of them
+The client side has no environment variable, however the server has a few of them
 
 - MONGODB_URI (Get your URI from mongodb atlas console)
 - PORT (you can set it to any port of your choice)
