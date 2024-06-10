@@ -182,12 +182,14 @@ const TweetCard = ({ tweet }: any) => {
   return (
     <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4 w-full">
       <div className="flex flex-row items-center  gap-3 justify-between relative">
-        <div className="flex flex-row items-center gap-3 relative w-8 h-8">
-          <img
-            src={userPic ? userPic : "/placeholder.png"}
-            alt="user pic"
-            className="w-full h-full object-cover object-center rounded-full"
-          />
+        <div className="flex flex-row items-center gap-3">
+          <div className="relative w-8 h-8">
+            <img
+              src={userPic ? userPic : "/placeholder.png"}
+              alt="user pic"
+              className="w-full h-full object-cover object-center rounded-full"
+            />
+          </div>
           <span>{username}</span>
         </div>
         <HiDotsVertical size={20} onClick={() => setShowMenu(!showMenu)} />
