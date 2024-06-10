@@ -14,7 +14,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:3000",
-      "https://twitter-topia-client.vercel.app/",
+      "https://twitter-topia-client.vercel.app",
     ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
