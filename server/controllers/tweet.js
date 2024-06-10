@@ -130,3 +130,108 @@ export const handleTweetDeletion = async (req, res, next) => {
     return res.status(500).json({ error });
   }
 };
+
+export const handleTweetLike = async (req, res, next) => {
+  try {
+    const { tweetId } = req.params;
+    const { userId } = req.body;
+    if (!tweetId || !userId)
+      return res.status(400).json({ error: "Missing Fields" });
+
+    const tweet = await Tweet.findById(tweetId);
+    if (!tweet) return res.status(404).json({ err: "No such tweet" });
+
+    if (tweet.likes.includes(userId)) {
+      return res.status(400).json({ err: "already-liked" });
+    }
+
+    if (tweet.dislikes.includes(userId)) {
+      return res.status(400).json({ err: "user-in-disliked" });
+    }
+
+    tweet.likes.push(userId);
+
+    await tweet.save();
+
+    res.status(200).json({ msg: "liked the tweet" });
+  } catch (error) {
+    console.log("Error while liking tweet: ", error);
+    return res.status(500).json({ error });
+  }
+};
+export const handleTweetDislike = async (req, res, next) => {
+  try {
+    const { tweetId } = req.params;
+    const { userId } = req.body;
+    if (!tweetId || !userId)
+      return res.status(400).json({ error: "Missing Fields" });
+
+    const tweet = await Tweet.findById(tweetId);
+    if (!tweet) return res.status(404).json({ err: "No such tweet" });
+
+    if (tweet.dislikes.includes(userId)) {
+      return res.status(400).json({ err: "already-disliked" });
+    }
+
+    if (tweet.likes.includes(userId)) {
+      return res.status(400).json({ err: "user-in-liked" });
+    }
+
+    tweet.dislikes.push(userId);
+
+    await tweet.save();
+
+    res.status(200).json({ msg: "disliked the tweet" });
+  } catch (error) {
+    console.log("Error while disliking tweet: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const handleRemoveFromLikes = async (req, res, next) => {
+  try {
+    const { tweetId } = req.params;
+    const { userId } = req.body;
+    if (!tweetId || !userId)
+      return res.status(400).json({ error: "Missing Fields" });
+
+    const tweet = await Tweet.findById(tweetId);
+    if (!tweet) return res.status(404).json({ err: "No such tweet" });
+
+    if (!tweet.likes.includes(userId)) {
+      return res.status(400).json({ err: "not-liked" });
+    }
+
+    tweet.likes = tweet.likes.filter((id) => id.toString() !== userId);
+    await tweet.save();
+
+    return res.status(200).json({ msg: "removed like" });
+  } catch (error) {
+    console.log("Error while removing from likes: ", error);
+    return res.status(500).json({ error });
+  }
+};
+
+export const handleRemoveFromDislikes = async (req, res, next) => {
+  try {
+    const { tweetId } = req.params;
+    const { userId } = req.body;
+    if (!tweetId || !userId)
+      return res.status(400).json({ error: "Missing Fields" });
+
+    const tweet = await Tweet.findById(tweetId);
+    if (!tweet) return res.status(404).json({ err: "No such tweet" });
+
+    if (!tweet.dislikes.includes(userId)) {
+      return res.status(400).json({ err: "not-dislike" });
+    }
+
+    tweet.dislikes = tweet.dislikes.filter((id) => id.toString() !== userId);
+    await tweet.save();
+
+    return res.status(200).json({ msg: "removed dislike" });
+  } catch (error) {
+    console.log("Error while removing from dislikes: ", error);
+    return res.status(500).json({ error });
+  }
+};

@@ -3,8 +3,12 @@ import {
   handleFetchAllTweets,
   handleGetTweetWithID,
   handleGetTweetsOfUser,
+  handleRemoveFromDislikes,
+  handleRemoveFromLikes,
   handleTweetCreation,
   handleTweetDeletion,
+  handleTweetDislike,
+  handleTweetLike,
   handleTweetUpdation,
 } from "../controllers/tweet.js";
 import upload from "../middlewares/multer.js";
@@ -28,5 +32,17 @@ router.patch("/:tweetId", upload.single("file"), handleTweetUpdation);
 
 // ? DELETE A TWEET BY TWEET ID
 router.delete("/:tweetId", handleTweetDeletion);
+
+// ? LIKE A TWEET
+router.post("/like/:tweetId", handleTweetLike);
+
+// ? REMOVE LIKE FROM TWEET
+router.post("/remove-like/:tweetId", handleRemoveFromLikes);
+
+// ? DISLIKE A TWEET
+router.post("/dislike/:tweetId", handleTweetDislike);
+
+// ? REMOVE DISLIKE FROM TWEET
+router.post("/remove-dislike/:tweetId", handleRemoveFromDislikes);
 
 export default router;
