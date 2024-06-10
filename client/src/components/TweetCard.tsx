@@ -10,6 +10,7 @@ import { IoMdThumbsDown } from "react-icons/io";
 import { MdModeComment } from "react-icons/md";
 import axios from "axios";
 import { IoIosSend } from "react-icons/io";
+import CommentCard from "./CommentCard";
 
 const TweetCard = ({ tweet }: any) => {
   const userPic = tweet.createdBy.profileImageUrl;
@@ -29,6 +30,7 @@ const TweetCard = ({ tweet }: any) => {
   const [dislikeCount, setDislikeCount] = useState<number>(0);
   const [commentCount, setCommentCount] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
+  const [comments, setComments] = useState<any[]>([]);
 
   const checkMediaType = (tweetMedia: string) => {
     if (tweetMedia.endsWith(".jpg")) setMediaType("image");
@@ -45,6 +47,7 @@ const TweetCard = ({ tweet }: any) => {
     setLikeCount(tweet?.likes.length);
     setDislikeCount(tweet?.dislikes.length);
     setCommentCount(tweet?.comments?.length);
+    setComments(tweet?.comments);
   }, [
     isDisliked,
     isLiked,
@@ -53,6 +56,7 @@ const TweetCard = ({ tweet }: any) => {
     user?.userId,
     commentCount,
     tweet?.comments?.length,
+    tweet?.comments,
   ]);
 
   const handleLikeClick = () => {
@@ -128,6 +132,7 @@ const TweetCard = ({ tweet }: any) => {
 
   const handleCommentPost = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!user) navigate("/user/signin");
     if (!comment) {
       toast("No content in comment!", { icon: "❗" });
       return;
@@ -249,7 +254,7 @@ const TweetCard = ({ tweet }: any) => {
       {showComments && (
         <main>
           <span className="text-xs">Comments</span>
-          <section className="flex border-[1px] border-neutral-300 rounded-lg p-2 max-h-[20vw] w-full">
+          <section className="flex flex-col gap-5 border-[1px] border-neutral-300 rounded-lg p-2 max-h-[50vh] w-full">
             {/* comment create */}
             <form
               onSubmit={handleCommentPost}
@@ -269,6 +274,16 @@ const TweetCard = ({ tweet }: any) => {
                 />
               </button>
             </form>
+            {/* Other's comments */}
+            <div className="flex flex-col gap-3">
+              {comments?.map((comment, ind) => {
+                return (
+                  <div key={ind}>
+                    <CommentCard comment={comment} />
+                  </div>
+                );
+              })}
+            </div>
           </section>
         </main>
       )}
