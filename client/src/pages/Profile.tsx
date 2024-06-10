@@ -47,7 +47,7 @@ const Profile = () => {
     navigate("/");
   };
   return (
-    <main className="relative w-full">
+    <main className="relative w-full max-w-[50vw]">
       <div className="w-full h-[150px] overflow-hidden  relative">
         <img
           src="/profile-bg.jpg"
