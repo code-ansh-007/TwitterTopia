@@ -51,6 +51,10 @@ const UpdateModal = () => {
         toast("Missing message!", { icon: "❌" });
         return;
       }
+      if (message.length > 280) {
+        toast("Character limit exceeded(280 characters)", { icon: "⚠️" });
+        return;
+      }
       setShowLoader(true);
       const formData = new FormData();
       formData.append("message", message);
@@ -73,6 +77,7 @@ const UpdateModal = () => {
           toast("Tweet Updated Successfully");
           closeModal();
           navigate("/");
+          window.location.reload();
           setShowLoader(false);
         });
     } catch (error) {
@@ -156,7 +161,7 @@ const UpdateModal = () => {
           type="submit"
           className="bg-blue-500 p-2 rounded-md text-white font-semibold mt-5 active:scale-110 transition transform duration-300 flex flex-row items-center justify-center gap-2"
         >
-          <span>Post</span>
+          <span>Update</span>
           {showLoader && <Loader color="white" size={26} />}
         </button>
       </form>

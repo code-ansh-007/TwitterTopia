@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import axios from "axios";
 import Notifications from "./pages/Notifications";
 import Search from "./pages/Search";
+import UserDetails from "./pages/UserDetails";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -60,6 +61,14 @@ function App() {
             element={
               <ProtectedRoute auth={false}>
                 <Search />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/userDetails/:userId"
+            element={
+              <ProtectedRoute auth={false}>
+                <UserDetails />
               </ProtectedRoute>
             }
           />

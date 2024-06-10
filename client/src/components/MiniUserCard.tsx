@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
 
 const MiniUserCard = ({ item }: any) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const navigate = useNavigate();
   return (
     <div className="flex flex-row items-center gap-3 relative justify-between bg-neutral-100 p-2 rounded-md w-full">
       <div className="flex flex-row items-center gap-3 ">
@@ -24,11 +26,14 @@ const MiniUserCard = ({ item }: any) => {
       />
       {showMenu && (
         <div className="bg-white p-2 rounded-md absolute right-10 top-5 shadow-md flex flex-col gap-2">
-          {/* <button className=" bg-neutral-200 px-2 py-1 rounded-md">
+          <button
+            onClick={() => {
+              navigate(`/userDetails/${item._id}`);
+              window.location.reload();
+            }}
+            className=" bg-neutral-200 px-2 py-1 rounded-md"
+          >
             Visit Profile
-          </button> */}
-          <button className=" bg-neutral-200 px-2 py-1 rounded-md">
-            Unfollow User
           </button>
         </div>
       )}

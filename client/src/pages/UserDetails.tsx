@@ -1,23 +1,24 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../components/Layout";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import TweetCard from "../components/TweetCard";
-import { HiDotsVertical } from "react-icons/hi";
 import MiniUserCard from "../components/MiniUserCard";
+import toast, { Toaster } from "react-hot-toast";
 
-const Profile = () => {
-  const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
+const UserDetails = () => {
+  const { userId } = useParams();
   const [compUser, setCompUser] = useState<any>({});
   const [tab, setTab] = useState<string>("following");
   const [posts, setPosts] = useState<any[]>([]);
+  const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   const fetchUserPosts = async () => {
     try {
       const res = await axios.get(
-        `https://twitter-topia-one.vercel.app/api/tweet/${user.userId}`
+        `https://twitter-topia-one.vercel.app/api/tweet/${userId}`
       );
       setPosts(res.data);
     } catch (error) {
@@ -28,9 +29,9 @@ const Profile = () => {
   const fetchUserDetails = async () => {
     try {
       const res = await axios.get(
-        `https://twitter-topia-one.vercel.app/api/user/${user.userId}`
+        `https://twitter-topia-one.vercel.app/api/user/${userId}`
       );
-      // console.log(res.data);
+      // console.log(res.data.followers.includes("666539d2570c70d1ae451a44"));
       setCompUser(res.data);
     } catch (error) {
       console.log("error while fetching user details: ", error);
@@ -42,10 +43,42 @@ const Profile = () => {
     fetchUserPosts();
   }, []);
 
-  const logout = () => {
-    localStorage.clear();
-    navigate("/");
+  const followUser = async () => {
+    try {
+      await axios
+        .post(
+          `https://twitter-topia-one.vercel.app/api/user/${compUser?._id}/follow`,
+          {
+            followerId: user.userId,
+          }
+        )
+        .then((res) => {
+          window.location.reload(); // ? refreshing page
+          toast(`Followed ${compUser?.username}`, { icon: "✅" });
+        });
+    } catch (error) {
+      console.log("Error while following user: ", error);
+    }
   };
+
+  const unfollowUser = async () => {
+    try {
+      await axios
+        .post(
+          `https://twitter-topia-one.vercel.app/api/user/${compUser?._id}/unfollow`,
+          {
+            followerId: user.userId,
+          }
+        )
+        .then((res) => {
+          window.location.reload(); // ? refreshing page
+          toast(`Unfollowed ${compUser?.username}`, { icon: "✅" });
+        });
+    } catch (error) {
+      console.log("Error while unfollowing user: ", error);
+    }
+  };
+
   return (
     <main className="relative">
       <div className="w-full h-[150px] overflow-hidden  relative">
@@ -54,34 +87,17 @@ const Profile = () => {
           alt="profile bg"
           className="object-cover w-full h-full"
         />
-        <span
-          className="absolute top-4 left-3"
-          onClick={() => setShowMenu(!showMenu)}
-        >
-          <HiDotsVertical size={30} className="text-white" />
-        </span>
-        {/* MENU */}
-        {showMenu && (
-          <div className="bg-white p-2 rounded-md absolute left-12 top-3">
-            <button
-              onClick={logout}
-              className="text-red-500 font-semibold bg-neutral-200 px-2 py-1 rounded-md"
-            >
-              Logout
-            </button>
-          </div>
-        )}
       </div>
       <div className="absolute top-[80px] right-2">
         <img
-          src={user.profileImageUrl}
+          src={compUser?.profileImageUrl}
           alt="profile pic"
           className="w-32  h-32 rounded-full shadow-md"
         />
       </div>
 
       <span className="text-left w-full text-4xl pl-1 font-bold">
-        {user.username}
+        {compUser?.username}
       </span>
       <section className="px-2">
         <div className="flex flex-row items-center gap-4 mt-4 text-neutral-600">
@@ -95,6 +111,27 @@ const Profile = () => {
           </div>
         </div>
       </section>
+      {compUser?._id !== user.userId && (
+        <div className="mt-4 px-2">
+          {compUser?.followers?.some((follower: any) =>
+            follower._id.includes(user.userId)
+          ) ? (
+            <button
+              onClick={unfollowUser}
+              className="bg-red-500 text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
+            >
+              Unfollow
+            </button>
+          ) : (
+            <button
+              onClick={followUser}
+              className="bg-blue-500 text-white px-2 py-1 rounded-md active:scale-105 transition transform duration-300"
+            >
+              Follow
+            </button>
+          )}
+        </div>
+      )}
       {/* TAB SELECTION */}
       <main className="mt-5 px-2 border-b-[1px] border-neutral-300">
         <div className="w-full flex flex-row items-center justify-between ">
@@ -126,7 +163,7 @@ const Profile = () => {
             } `}
             onClick={() => setTab("your-posts")}
           >
-            Your Posts
+            Posts
           </span>
         </div>
       </main>
@@ -136,7 +173,7 @@ const Profile = () => {
           <div className="w-full flex flex-col gap-3">
             {compUser?.following?.length === 0 ? (
               <span className="text-center w-full text-neutral-500">
-                You don't follow anyone.
+                {compUser?.username} doesn't follow anyone.
               </span>
             ) : (
               compUser?.following?.map((item: any, ind: any) => {
@@ -152,7 +189,7 @@ const Profile = () => {
           <div className="flex w-full flex-col gap-3">
             {compUser?.followers?.length === 0 ? (
               <span className="text-center w-full text-neutral-500">
-                You have no followers.
+                {compUser?.username} has no followers.
               </span>
             ) : (
               compUser?.followers?.map((item: any, ind: any) => {
@@ -165,13 +202,13 @@ const Profile = () => {
             )}
           </div>
         ) : (
-          <div className="flex w-full flex-col gap-3">
+          <div className="flex w-full">
             {posts?.length === 0 ? (
               <span className="text-center w-full text-neutral-500">
-                You have not posted anything.
+                {compUser?.username} has not posted anything.
               </span>
             ) : (
-              <div>
+              <div className="flex flex-col gap-5">
                 {posts?.map((post, ind) => {
                   return (
                     <div key={ind} className="w-full">
@@ -184,8 +221,9 @@ const Profile = () => {
           </div>
         )}
       </div>
+      <Toaster />
     </main>
   );
 };
 
-export default Layout(Profile);
+export default Layout(UserDetails);

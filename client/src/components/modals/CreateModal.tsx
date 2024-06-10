@@ -29,6 +29,10 @@ const CreateModal = () => {
         toast("Missing message!", { icon: "❌" });
         return;
       }
+      if (message.length > 280) {
+        toast("Character limit exceeded(280 characters)", { icon: "⚠️" });
+        return;
+      }
       setShowLoader(true);
       const formData = new FormData();
       formData.append("message", message);
@@ -51,6 +55,7 @@ const CreateModal = () => {
           toast("Tweet Created Successfully");
           closeModal();
           navigate("/");
+          window.location.reload();
           setShowLoader(false);
         });
     } catch (error) {

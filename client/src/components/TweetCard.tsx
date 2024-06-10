@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { RiPencilFill } from "react-icons/ri";
 import useUpdateModalStore from "../utils/updateModalStore";
+import { AiFillProfile } from "react-icons/ai";
+import { Toaster } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const TweetCard = ({ tweet }: any) => {
   const userPic = tweet.createdBy.profileImageUrl;
@@ -12,6 +15,8 @@ const TweetCard = ({ tweet }: any) => {
   const [mediaType, setMediaType] = useState<string>("");
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const { openModal } = useUpdateModalStore();
+  const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
+  const navigate = useNavigate();
 
   const checkMediaType = (tweetMedia: string) => {
     if (tweetMedia.endsWith(".jpg")) setMediaType("image");
@@ -20,7 +25,7 @@ const TweetCard = ({ tweet }: any) => {
 
   useEffect(() => {
     checkMediaType(tweetMedia);
-  }, []);
+  }, [tweetMedia]);
 
   return (
     <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4 w-full">
@@ -35,17 +40,26 @@ const TweetCard = ({ tweet }: any) => {
         </div>
         <HiDotsVertical size={20} onClick={() => setShowMenu(!showMenu)} />
         {showMenu && (
-          <div className="bg-white p-2 rounded-md absolute right-6 top-5 shadow-md flex flex-col gap-2">
-            {/* <button className=" bg-neutral-200 px-2 py-1 rounded-md">
-            Visit Profile
-          </button> */}
+          <div className="bg-white p-2 rounded-md absolute right-6 top-5 shadow-lg flex flex-col gap-2">
             <button
-              onClick={() => openModal(tweet._id)}
+              onClick={() => {
+                navigate(`/userDetails/${tweet?.createdBy?._id}`);
+              }}
               className=" bg-neutral-200 px-2 py-1 rounded-md flex flex-row items-center gap-2"
             >
-              <RiPencilFill size={24} />
-              <span>Edit Tweet</span>
+              <AiFillProfile size={26} />
+              <span>Visit Profile</span>
             </button>
+
+            {user.userId === tweet.createdBy._id && (
+              <button
+                onClick={() => openModal(tweet._id)}
+                className=" bg-neutral-200 px-2 py-1 rounded-md flex flex-row items-center gap-2"
+              >
+                <RiPencilFill size={24} />
+                <span>Edit Tweet</span>
+              </button>
+            )}
           </div>
         )}
       </div>
@@ -72,6 +86,7 @@ const TweetCard = ({ tweet }: any) => {
           ></video>
         )
       )}
+      <Toaster />
     </main>
   );
 };
