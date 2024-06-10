@@ -5,7 +5,6 @@ import { useLocation } from "react-router-dom";
 import CreateModal from "./modals/CreateModal";
 import UpdateModal from "./modals/UpdateModal";
 import useUpdateModalStore from "../utils/updateModalStore";
-import Sidebar from "./Sidebar";
 
 const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
   const WrappedComponent: FC<P> = (props) => {
@@ -20,39 +19,39 @@ const Layout = <P extends object>(Component: ComponentType<P>): FC<P> => {
     }, [url, location.pathname]);
 
     return (
-      <main className="flex flex-row relative w-full md:pl-[20vw] ">
-        <div className=" hidden md:block">
-          <Sidebar />
-        </div>
+      <main className="flex flex-row relative w-full md:pl-[25vw]">
+        <div className="flex flex-col  md:flex-row-reverse  min-h-screen w-full">
+          <div className="flex flex-col min-h-screen w-full">
+            {/* Top Navbar */}
+            <div
+              hidden={
+                url === "profile" ||
+                url === "mail" ||
+                url === "search" ||
+                url === "userDetails"
+              }
+            >
+              <MobileNavbar />
+            </div>
 
-        <div className="flex flex-col min-h-screen w-full">
-          {/* Top Navbar */}
-          <div
-            hidden={
-              url === "profile" ||
-              url === "mail" ||
-              url === "search" ||
-              url === "userDetails"
-            }
-          >
-            <MobileNavbar />
-          </div>
-
-          {/* Main Content */}
-          <div
-            className={`flex-grow container w-full mx-auto ${
-              location.pathname === "/user/profile" || url === "userDetails"
-                ? "p-0"
-                : "p-4"
-            }`}
-          >
-            <Component {...props} />
+            {/* Main Content */}
+            <div
+              className={`flex-grow container w-full mx-auto ${
+                location.pathname === "/user/profile" || url === "userDetails"
+                  ? "p-0"
+                  : "p-4"
+              }`}
+            >
+              <Component {...props} />
+            </div>
           </div>
 
           {/* Bottom Navbar */}
-          <div className="md:hidden block">
-            <MobileBottomNav />
-          </div>
+
+          {/* <div className="md:hidden block"> */}
+          {/* <div> */}
+          <MobileBottomNav />
+          {/* </div> */}
           <CreateModal />
           {isModalOpen && <UpdateModal />}
         </div>
