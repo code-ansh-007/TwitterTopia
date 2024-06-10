@@ -49,7 +49,18 @@ export const handleTweetCreation = async (req, res, next) => {
 export const handleGetTweetWithID = async (req, res, next) => {
   try {
     const { tweetId } = req.params;
-    const tweet = await Tweet.findById(tweetId);
+    const tweet = await Tweet.findById(tweetId)
+      .populate({
+        path: "createdBy",
+        select: "username profileImageUrl",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "createdBy",
+          select: "username profileImageUrl",
+        },
+      });
     return res.status(200).json(tweet);
   } catch (error) {
     console.log("Error fetching tweet: ", error);
@@ -63,6 +74,13 @@ export const handleFetchAllTweets = async (req, res, next) => {
       .populate({
         path: "createdBy",
         select: "username profileImageUrl",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "createdBy",
+          select: "username profileImageUrl",
+        },
       })
       .sort({ createdAt: -1 });
     return res.status(200).json(tweets);

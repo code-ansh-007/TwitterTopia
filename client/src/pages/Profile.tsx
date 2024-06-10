@@ -171,7 +171,7 @@ const Profile = () => {
                 You have not posted anything.
               </span>
             ) : (
-              <div>
+              <div className="flex flex-col gap-5">
                 {posts?.map((post, ind) => {
                   return (
                     <div key={ind} className="w-full">
