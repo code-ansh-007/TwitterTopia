@@ -72,13 +72,13 @@ const Profile = () => {
           </div>
         )}
       </div>
-      <div className="absolute top-[80px] right-2">
+      <div className="absolute top-[80px] right-2 w-32 md:w-40 md:h-40 h-32">
         <img
           src={
             user?.profileImageUrl ? user?.profileImageUrl : "/placeholder.png"
           }
           alt="profile pic"
-          className="w-32 md:w-40 md:h-40 h-32 rounded-full shadow-md"
+          className="object-cover object-center w-full h-full rounded-full"
         />
       </div>
 

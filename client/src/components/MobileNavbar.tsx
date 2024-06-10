@@ -21,13 +21,17 @@ const MobileNavbar = () => {
             }
           }}
         >
-          <img
-            src={
-              user?.profileImageUrl ? user?.profileImageUrl : "/placeholder.png"
-            }
-            className="w-8 h-8 rounded-full md:hidden"
-            alt="tweetopia logo"
-          />
+          <div className="w-8 h-8 relative">
+            <img
+              src={
+                user?.profileImageUrl
+                  ? user?.profileImageUrl
+                  : "/placeholder.png"
+              }
+              className="w-full h-full object-cover object-center rounded-full md:hidden"
+              alt="tweetopia logo"
+            />
+          </div>
         </div>
         <span className="font-playball font-bold text-2xl text-blue-400 md:hidden">
           TweeTopia

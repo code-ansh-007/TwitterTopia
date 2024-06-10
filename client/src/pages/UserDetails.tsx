@@ -95,7 +95,7 @@ const UserDetails = () => {
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="absolute top-[80px] right-2 md:right-5">
+      <div className="absolute top-[80px] right-2 md:right-5 w-32 h-32 md:w-40 md:h-40">
         <img
           src={
             compUser?.profileImageUrl
@@ -103,7 +103,7 @@ const UserDetails = () => {
               : "/placeholder.png"
           }
           alt="profile pic"
-          className="w-32  md:w-40 md:h-40 h-32 rounded-full shadow-md"
+          className="object-cover object-center w-full h-full rounded-full shadow-md"
         />
       </div>
 

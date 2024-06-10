@@ -29,15 +29,17 @@ const CommentCard = ({ comment }: any) => {
     <main>
       <div className="flex flex-row items-center justify-between">
         <div className="flex flex-row items-center gap-2">
-          <img
-            src={
-              comment.createdBy.profileImageUrl
-                ? comment.createdBy.profileImageUrl
-                : "/placeholder.png"
-            }
-            alt="user img"
-            className="w-5 h-5 rounded-full"
-          />
+          <div className="relative w-5 h-5">
+            <img
+              src={
+                comment.createdBy.profileImageUrl
+                  ? comment.createdBy.profileImageUrl
+                  : "/placeholder.png"
+              }
+              alt="user img"
+              className="rounded-full object-fit object-center w-full h-full"
+            />
+          </div>
           <span className="text-sm">{comment.createdBy.username}</span>
         </div>
         {user.userId === comment.createdBy._id && (

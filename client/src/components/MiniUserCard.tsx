@@ -8,15 +8,17 @@ const MiniUserCard = ({ item }: any) => {
   return (
     <div className="flex flex-row md:max-w-[30vw] items-center gap-3 relative justify-between bg-neutral-100 p-2 rounded-md w-full">
       <div className="flex flex-row items-center gap-3 ">
-        <img
-          src={
-            item.profileImageUrl !== ""
-              ? item.profileImageUrl
-              : "/placeholder.png"
-          }
-          alt=" user pic"
-          className="w-8 h-8 rounded-full"
-        />
+        <div className="w-8 h-8 relative">
+          <img
+            src={
+              item.profileImageUrl !== ""
+                ? item.profileImageUrl
+                : "/placeholder.png"
+            }
+            alt=" user pic"
+            className="w-full h-full object-cover object-center rounded-full"
+          />
+        </div>
         <span>{item.username}</span>
       </div>
       <HiDotsVertical
