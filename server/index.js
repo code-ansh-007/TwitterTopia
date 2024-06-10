@@ -12,7 +12,10 @@ const PORT = process.env.PORT || 8000;
 // ? middlewares
 app.use(
   cors({
-    origin: ["http://localhost:3000"],
+    origin: [
+      "http://localhost:3000",
+      "https://twitter-topia-client.vercel.app/",
+    ],
     methods: ["GET", "POST", "PATCH", "DELETE"],
     credentials: true,
   })
