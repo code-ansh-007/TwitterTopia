@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import "dotenv/config";
 import userRouter from "./routes/user.js";
 import tweetRouter from "./routes/tweet.js";
+import commentRouter from "./routes/comment.js";
 
 const app = e();
 const PORT = process.env.PORT || 8000;
@@ -41,5 +42,6 @@ app.get("/", (req, res) => {
 // ? Routes
 app.use("/api/user", userRouter);
 app.use("/api/tweet", tweetRouter);
+app.use("/api/comment", commentRouter);
 
 app.listen(PORT, () => console.log(`server running on port: ${PORT}`));
