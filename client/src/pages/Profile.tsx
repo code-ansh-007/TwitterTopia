@@ -47,7 +47,7 @@ const Profile = () => {
     navigate("/");
   };
   return (
-    <main className="relative">
+    <main className="relative w-full">
       <div className="w-full h-[150px] overflow-hidden  relative">
         <img
           src="/profile-bg.jpg"
@@ -76,7 +76,7 @@ const Profile = () => {
         <img
           src={user.profileImageUrl}
           alt="profile pic"
-          className="w-32  h-32 rounded-full shadow-md"
+          className="w-32 md:w-40 md:h-40 h-32 rounded-full shadow-md"
         />
       </div>
 

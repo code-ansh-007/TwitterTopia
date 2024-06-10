@@ -73,7 +73,7 @@ const TweetCard = ({ tweet }: any) => {
         <img
           src={tweetMedia}
           alt="tweet media"
-          className="rounded-lg max-w-[400px] w-full"
+          className="rounded-lg max-w-[400px] md:max-w-[38vw] w-full"
         />
       ) : (
         tweetMedia !== "" && (
@@ -82,7 +82,7 @@ const TweetCard = ({ tweet }: any) => {
             controls
             autoPlay
             muted
-            className="rounded-lg"
+            className="rounded-lg md:max-w-[38vw]"
           ></video>
         )
       )}

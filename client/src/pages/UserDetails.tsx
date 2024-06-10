@@ -80,39 +80,39 @@ const UserDetails = () => {
   };
 
   return (
-    <main className="relative">
-      <div className="w-full h-[150px] overflow-hidden  relative">
+    <main className="relative w-full">
+      <div className="w-full h-[150px] overflow-hidden relative">
         <img
           src="/profile-bg.jpg"
           alt="profile bg"
           className="object-cover w-full h-full"
         />
       </div>
-      <div className="absolute top-[80px] right-2">
+      <div className="absolute top-[80px] right-2 md:right-5">
         <img
           src={compUser?.profileImageUrl}
           alt="profile pic"
-          className="w-32  h-32 rounded-full shadow-md"
+          className="w-32  md:w-40 md:h-40 h-32 rounded-full shadow-md"
         />
       </div>
 
       <span className="text-left w-full text-4xl pl-1 font-bold">
         {compUser?.username}
       </span>
-      <section className="px-2">
-        <div className="flex flex-row items-center gap-4 mt-4 text-neutral-600">
+      <section className="px-2 w-full">
+        <div className="flex flex-row items-center gap-4 mt-4 text-neutral-600 w-full">
           <div className="flex flex-row items-center gap-2">
             <span>{compUser?.followers?.length}</span>
             <span>Followers</span>
           </div>
-          <div className="flex flex-row items-center gap-2">
+          <div className="flex flex-row items-center gap-2 w-full">
             <span>{compUser?.following?.length}</span>
             <span>Following</span>
           </div>
         </div>
       </section>
       {compUser?._id !== user.userId && (
-        <div className="mt-4 px-2">
+        <div className="mt-4 px-2 w-full">
           {compUser?.followers?.some((follower: any) =>
             follower._id.includes(user.userId)
           ) ? (
@@ -133,7 +133,7 @@ const UserDetails = () => {
         </div>
       )}
       {/* TAB SELECTION */}
-      <main className="mt-5 px-2 border-b-[1px] border-neutral-300">
+      <main className="mt-5 px-5 border-b-[1px] border-neutral-300 w-full">
         <div className="w-full flex flex-row items-center justify-between ">
           <span
             className={`${

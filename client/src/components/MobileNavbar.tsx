@@ -9,7 +9,7 @@ const MobileNavbar = () => {
   const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
   const navigate = useNavigate();
   return (
-    <main className="flex flex-col mb-2 p-4 items-center gap-7 border-b-[1px] border-neutral-300 pb-0 sticky top-0 bg-white">
+    <main className="flex flex-col mb-2 p-4 md:max-w-[41vw] md:pt-0 items-center gap-7 border-b-[1px] border-neutral-300 pb-0 sticky top-0 bg-white">
       <div className="flex flex-row items-center w-full">
         <div
           className="w-[38%]"
@@ -23,11 +23,11 @@ const MobileNavbar = () => {
         >
           <img
             src={user ? user.profileImageUrl : "/placeholder.png"}
-            className="w-8 h-8 rounded-full"
+            className="w-8 h-8 rounded-full md:hidden"
             alt="tweetopia logo"
           />
         </div>
-        <span className="font-playball font-bold text-2xl text-blue-400">
+        <span className="font-playball font-bold text-2xl text-blue-400 md:hidden">
           TweeTopia
         </span>
       </div>

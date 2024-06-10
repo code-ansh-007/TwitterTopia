@@ -102,7 +102,7 @@ const UpdateModal = () => {
     <main className=" fixed inset-0 bg-neutral-500 bg-opacity-40  w-full flex flex-col items-center justify-center px-6">
       <form
         onSubmit={handleUpdate}
-        className="flex bg-white rounded-md w-full p-2 flex-col gap-2"
+        className="flex bg-white rounded-md w-full p-2 flex-col gap-2 md:max-w-[40vw]"
       >
         <div className="flex w-full  border-b-[1px] border-neutral-300">
           <span className="font-playball font-semibold text-xl text-blue-400 w-full">

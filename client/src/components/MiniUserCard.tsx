@@ -6,7 +6,7 @@ const MiniUserCard = ({ item }: any) => {
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const navigate = useNavigate();
   return (
-    <div className="flex flex-row items-center gap-3 relative justify-between bg-neutral-100 p-2 rounded-md w-full">
+    <div className="flex flex-row md:max-w-[30vw] items-center gap-3 relative justify-between bg-neutral-100 p-2 rounded-md w-full">
       <div className="flex flex-row items-center gap-3 ">
         <img
           src={

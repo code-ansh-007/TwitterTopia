@@ -13,7 +13,7 @@ const MobileBottomNav = () => {
   const navigate = useNavigate();
   const user = localStorage.getItem("user:details");
   return (
-    <main className="border-t-[1px] border-neutral-300 p-4 sticky bottom-0 bg-white">
+    <main className="border-t-[1px] border-neutral-300 p-4 fixed w-full bottom-0 bg-white">
       <div className="flex flex-row items-center justify-between">
         <GrHomeRounded
           size={28}
