@@ -82,7 +82,7 @@ const Home = () => {
     fetchPostsFromPeopleYouFollow();
   }, [selectedTab]);
   return (
-    <main className="flex flex-col gap-8 md:max-w-[40vw]">
+    <main className="flex flex-col gap-8 md:max-w-[40vw] mb-20">
       {selectedTab === "for-you" ? (
         tweets?.map((tweet, ind) => {
           return (
