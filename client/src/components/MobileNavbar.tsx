@@ -22,7 +22,9 @@ const MobileNavbar = () => {
           }}
         >
           <img
-            src={user ? user.profileImageUrl : "/placeholder.png"}
+            src={
+              user?.profileImageUrl ? user?.profileImageUrl : "/placeholder.png"
+            }
             className="w-8 h-8 rounded-full md:hidden"
             alt="tweetopia logo"
           />
