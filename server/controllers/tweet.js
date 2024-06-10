@@ -93,9 +93,21 @@ export const handleFetchAllTweets = async (req, res, next) => {
 export const handleGetTweetsOfUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
-    const tweets = await Tweet.find({ createdBy: userId }).sort({
-      createdAt: -1,
-    });
+    const tweets = await Tweet.find({ createdBy: userId })
+      .populate({
+        path: "createdBy",
+        select: "username profileImageUrl",
+      })
+      .populate({
+        path: "comments",
+        populate: {
+          path: "createdBy",
+          select: "username profileImageUrl",
+        },
+      })
+      .sort({
+        createdAt: -1,
+      });
     res.status(200).json(tweets);
   } catch (error) {
     console.log("Error while fetching user tweets", error);
