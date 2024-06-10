@@ -7,7 +7,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { IoMdThumbsUp } from "react-icons/io";
 import { IoMdThumbsDown } from "react-icons/io";
-import { MdModeComment } from "react-icons/md";
+import { MdDelete, MdModeComment } from "react-icons/md";
 import axios from "axios";
 import { IoIosSend } from "react-icons/io";
 import CommentCard from "./CommentCard";
@@ -156,6 +156,21 @@ const TweetCard = ({ tweet }: any) => {
     }
   };
 
+  const deleteTweet = async () => {
+    try {
+      await axios
+        .delete(`https://twitter-topia-one.vercel.app/api/tweet/${tweet._id}`)
+        .then((res) => {
+          console.log("Deleted Tweet");
+          toast("Successfully Deleted Tweet", { icon: "✅" });
+          window.location.reload();
+        });
+    } catch (error) {
+      console.log("error deleting tweet: ", error);
+      toast("Error Deleting Tweet", { icon: "⚠️" });
+    }
+  };
+
   return (
     <main className="flex flex-col gap-2 border-b-[1px] border-neutral-300 pb-4 w-full">
       <div className="flex flex-row items-center  gap-3 justify-between relative">
@@ -169,14 +184,14 @@ const TweetCard = ({ tweet }: any) => {
         </div>
         <HiDotsVertical size={20} onClick={() => setShowMenu(!showMenu)} />
         {showMenu && (
-          <div className="bg-white p-2 rounded-md absolute right-6 top-5 shadow-lg flex flex-col gap-2">
+          <div className="bg-white text-xs p-2 rounded-md absolute right-6 top-5 shadow-lg flex flex-col gap-2">
             <button
               onClick={() => {
                 navigate(`/userDetails/${tweet?.createdBy?._id}`);
               }}
               className=" bg-neutral-200 px-2 py-1 rounded-md flex flex-row items-center gap-2"
             >
-              <AiFillProfile size={26} />
+              <AiFillProfile size={20} />
               <span>Visit Profile</span>
             </button>
 
@@ -185,8 +200,17 @@ const TweetCard = ({ tweet }: any) => {
                 onClick={() => openModal(tweet._id)}
                 className=" bg-neutral-200 px-2 py-1 rounded-md flex flex-row items-center gap-2"
               >
-                <RiPencilFill size={24} />
+                <RiPencilFill size={20} />
                 <span>Edit Tweet</span>
+              </button>
+            )}
+            {user.userId === tweet.createdBy._id && (
+              <button
+                onClick={deleteTweet}
+                className=" bg-neutral-200 text-red-500 px-2 py-1 rounded-md flex flex-row items-center gap-2"
+              >
+                <MdDelete size={20} />
+                <span>Delete Tweet</span>
               </button>
             )}
           </div>

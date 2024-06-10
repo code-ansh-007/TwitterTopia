@@ -3,6 +3,7 @@ import { GoArrowLeft } from "react-icons/go";
 import { FaCamera } from "react-icons/fa6";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
 
 const SignUp = () => {
   const [username, setUsername] = useState<string>("");
@@ -30,6 +31,20 @@ const SignUp = () => {
   const handleSignUp = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
+      if (!username || !password || !confirmPassword) {
+        toast("Fill all the fields.", { icon: "❗" });
+        return;
+      }
+      if (password !== confirmPassword) {
+        toast("Password and Confirm Password are different.", { icon: "❗" });
+        return;
+      }
+      if (username.includes(" ")) {
+        toast("Username cannot have blank spaces.", {
+          icon: "❗",
+        });
+        return;
+      }
       const formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
@@ -142,6 +157,7 @@ const SignUp = () => {
           </span>
         </div>
       </form>
+      <Toaster />
     </div>
   );
 };
