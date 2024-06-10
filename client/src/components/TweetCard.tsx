@@ -60,11 +60,19 @@ const TweetCard = ({ tweet }: any) => {
   ]);
 
   const handleLikeClick = () => {
+    if (!user) {
+      navigate("/user/signin");
+      return;
+    }
     if (!isLiked && !isDisliked) likeTweet();
     else if (isLiked) removeLike();
     else return;
   };
   const handleDislikeClick = () => {
+    if (!user) {
+      navigate("/user/signin");
+      return;
+    }
     if (!isDisliked && !isLiked) dislikeTweet();
     else if (isDisliked) removeDislike();
     else return;
