@@ -1,0 +1,531 @@
+{
+	"info": {
+		"_postman_id": "69183984-5c50-481f-857a-1be5541de207",
+		"name": "TwitterTopia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34537660"
+	},
+	"item": [
+		{
+			"name": "User Routes",
+			"item": [
+				{
+					"name": "Signup Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "jacob",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "confirmPassword",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/A:/Ansh Personal/Misc/Me_pic.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/user/register",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login Route",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"ansh\",\r\n    \"password\": \"123\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/user/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/user",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/user/66653d8d7973155b94d612bf",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"user",
+								"66653d8d7973155b94d612bf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Follow User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"followerId\": \"666539d2570c70d1ae451a44\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/user/66653d8d7973155b94d612bf/follow",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"user",
+								"66653d8d7973155b94d612bf",
+								"follow"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unfollow a User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"followerId\": \"6663b8477d3a16c62712949f\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/user/6663b605e447dcb4c8aa8645/unfollow",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"user",
+								"6663b605e447dcb4c8aa8645",
+								"unfollow"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tweets Routes",
+			"item": [
+				{
+					"name": "Create Tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "tweet creation test 2 with image 5",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "666539d2570c70d1ae451a44",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/A:/Ansh Personal/Misc/buddha-wallpaper.jfif"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/create",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Tweets",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/66653d8d7973155b94d612bf",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"66653d8d7973155b94d612bf"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a Tweet",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "message",
+									"value": "test update to test with image jsut changing text",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "userId",
+									"value": "66653d8d7973155b94d612bf",
+									"type": "text"
+								},
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/A:/Ansh Personal/Misc/idiots-wall.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/666586f97f321d5204014332",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"666586f97f321d5204014332"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Tweet",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/666586f97f321d5204014332",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"666586f97f321d5204014332"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get a Tweet With ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/single/666586f97f321d5204014332",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"single",
+								"666586f97f321d5204014332"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Like a tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"66653d8d7973155b94d612bf\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://twitter-topia-one.vercel.app/api/tweet/like/6666657a9175fa76dee4164b",
+							"protocol": "https",
+							"host": [
+								"twitter-topia-one",
+								"vercel",
+								"app"
+							],
+							"path": [
+								"api",
+								"tweet",
+								"like",
+								"6666657a9175fa76dee4164b"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Dislike a tweet",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"666539d2570c70d1ae451a44\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/tweet/dislike/666586f97f321d5204014332",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tweet",
+								"dislike",
+								"666586f97f321d5204014332"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove Dislike",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userId\": \"666539d2570c70d1ae451a44\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/tweet/remove-dislike/666586f97f321d5204014332",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"tweet",
+								"remove-dislike",
+								"666586f97f321d5204014332"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment Routes",
+			"item": [
+				{
+					"name": "Create a comment",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"text\" : \"this post is good\",\r\n    \"createdBy\": \"666539d2570c70d1ae451a44\" ,\r\n    \"tweetId\": \"666586f97f321d5204014332\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/comment/create",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"comment",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete  a Comment",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"commentId\": \"6666af12840a9347cf8c458e\" ,\r\n    \"tweetId\": \"666586f97f321d5204014332\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/comment/delete",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"comment",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
