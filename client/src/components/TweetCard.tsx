@@ -203,7 +203,7 @@ const TweetCard = ({ tweet }: any) => {
               <span>Visit Profile</span>
             </button>
 
-            {user.userId === tweet.createdBy._id && (
+            {user?.userId === tweet?.createdBy._id && (
               <button
                 onClick={() => openModal(tweet._id)}
                 className=" bg-neutral-200 px-2 py-1 rounded-md flex flex-row items-center gap-2"
@@ -212,7 +212,7 @@ const TweetCard = ({ tweet }: any) => {
                 <span>Edit Tweet</span>
               </button>
             )}
-            {user.userId === tweet.createdBy._id && (
+            {user?.userId === tweet?.createdBy._id && (
               <button
                 onClick={deleteTweet}
                 className=" bg-neutral-200 text-red-500 px-2 py-1 rounded-md flex flex-row items-center gap-2"
