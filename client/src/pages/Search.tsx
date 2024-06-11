@@ -162,7 +162,7 @@ const Search = () => {
                 )}
               </div>
             ) : (
-              <div className="w-full flex">
+              <div className="w-full flex flex-col gap-5">
                 {searchTweets.length === 0 ? (
                   <span className="text-center w-full text-neutral-600">
                     No such tweets.
