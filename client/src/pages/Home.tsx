@@ -14,20 +14,40 @@ const Home = () => {
   const [followingPosts, setFollowingPosts] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
+  // const fetchPostsFromPeopleYouFollow = async () => {
+  //   const following = compUser?.following;
+  //   if (following && following.length > 0) {
+  //     setLoading(true);
+  //     following.forEach(async (person: any) => {
+  //       try {
+  //         const posts = await fetchPostsWithID(person._id);
+  //         setFollowingPosts((prevPosts) => [...prevPosts, ...posts]);
+  //       } catch (error) {
+  //         console.log("Error fetching posts of user: ", error);
+  //       }
+  //     });
+  //   }
+  //   setLoading(false);
+  // };
+
   const fetchPostsFromPeopleYouFollow = async () => {
     const following = compUser?.following;
     if (following && following.length > 0) {
       setLoading(true);
-      following.forEach(async (person: any) => {
-        try {
-          const posts = await fetchPostsWithID(person._id);
-          setFollowingPosts((prevPosts) => [...prevPosts, ...posts]);
-        } catch (error) {
-          console.log("Error fetching posts of user: ", error);
-        }
-      });
+
+      try {
+        const postsPromises = following.map((person: any) =>
+          fetchPostsWithID(person._id)
+        );
+        const allPosts = await Promise.all(postsPromises);
+        const combinedPosts = allPosts.flat(); // Flatten the array of arrays
+        setFollowingPosts(combinedPosts);
+      } catch (error) {
+        console.log("Error fetching posts of user: ", error);
+      } finally {
+        setLoading(false);
+      }
     }
-    setLoading(false);
   };
 
   const fetchUserDetails = async () => {

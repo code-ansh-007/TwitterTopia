@@ -5,6 +5,7 @@ import { IoSearch } from "react-icons/io5";
 import axios from "axios";
 import MiniProfileCard from "../components/MiniProfileCard";
 import TweetCard from "../components/TweetCard";
+import Loader from "../components/Loader";
 
 const Search = () => {
   const [users, setUsers] = useState<any[]>([]);
@@ -53,6 +54,7 @@ const Search = () => {
     if (!searchText) {
       return;
     }
+    setLoading(true);
     setSelectedTab("");
     setShowEmpty(false);
     setSearchUsers([]);
@@ -84,6 +86,7 @@ const Search = () => {
     } else {
       setSelectedTab("tweets");
     }
+    setLoading(false);
   };
 
   return (
@@ -107,14 +110,15 @@ const Search = () => {
         </button>
       </div>
       {/* Search REsults section */}
-      <main className="w-full">
+      <main className="w-full flex flex-col">
+        {/* {loading ? <Loader size={40} color="blue-500" /> : null} */}
         {showEmpty && (
           <span className="text-center w-full text-neutral-600">
             No such users or tweets.
           </span>
         )}
         {searchUsers.length > 0 || searchTweets.length > 0 ? (
-          <div>
+          <div className="w-full">
             <div className="w-full flex flex-row items-center justify-between mb-5">
               <span
                 className={`${

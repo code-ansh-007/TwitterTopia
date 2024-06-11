@@ -219,7 +219,7 @@ const UserDetails = () => {
                 {compUser?.username} has not posted anything.
               </span>
             ) : (
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 w-full">
                 {posts?.map((post, ind) => {
                   return (
                     <div key={ind} className="w-full">
