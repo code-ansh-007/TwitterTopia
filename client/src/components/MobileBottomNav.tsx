@@ -69,12 +69,11 @@ const MobileBottomNav = () => {
         >
           <FaFeather
             size={30}
-            color={selectedTab === "write" ? "#313233" : "#7d8085"}
+            // color={selectedTab === "write" ? "#313233" : "#7d8085"}
+            className="text-blue-500 animate-pulse"
           />
           <span
-            className={`font-semibold hidden md:block mb-[-4px] ${
-              selectedTab === "write" ? "text-[#313233]" : "text-[#7d8085]"
-            }`}
+            className={`font-semibold hidden md:block mb-[-4px] text-blue-500 animate-pulse`}
           >
             Create
           </span>
