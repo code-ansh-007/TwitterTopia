@@ -12,11 +12,22 @@ import axios from "axios";
 import { IoIosSend } from "react-icons/io";
 import CommentCard from "./CommentCard";
 
-const TweetCard = ({ tweet }: any) => {
-  const userPic = tweet.createdBy.profileImageUrl;
-  const username = tweet.createdBy.username;
-  const tweetMedia = tweet.fileUrl;
-  const message = tweet.message;
+const TweetCard = ({ tweetId }: any) => {
+  const [tweet, setTweet] = useState<any>({});
+
+  const fetchTweet = async () => {
+    try {
+      const res = await axios.get(
+        `https://twitter-topia-one.vercel.app/api/tweet/single/${tweetId}`
+      );
+      if (res.data) {
+        setTweet(res.data);
+      }
+    } catch (error) {
+      console.log("Error while fetching tweet: ", error);
+    }
+  };
+
   const [lineClamp, setLineClamp] = useState(true);
   const [mediaType, setMediaType] = useState<string>("");
   const [showMenu, setShowMenu] = useState<boolean>(false);
@@ -24,58 +35,61 @@ const TweetCard = ({ tweet }: any) => {
   const user = JSON.parse(localStorage.getItem("user:details") ?? "null");
   const navigate = useNavigate();
   const [showComments, setShowComments] = useState<boolean>(false);
-  const [isLiked, setIsLiked] = useState<boolean>(false);
-  const [isDisliked, setIsDisliked] = useState<boolean>(false);
-  const [likeCount, setLikeCount] = useState<number>(0);
-  const [dislikeCount, setDislikeCount] = useState<number>(0);
-  const [commentCount, setCommentCount] = useState<number>(0);
+
   const [comment, setComment] = useState<string>("");
-  const [comments, setComments] = useState<any[]>([]);
+  const [interaction, setInteraction] = useState<boolean>(false);
 
   const checkMediaType = (tweetMedia: string) => {
-    if (tweetMedia.endsWith(".jpg")) setMediaType("image");
+    if (tweetMedia?.endsWith(".jpg")) setMediaType("image");
     else setMediaType("video");
   };
 
   useEffect(() => {
-    checkMediaType(tweetMedia);
-  }, [tweetMedia]);
+    checkMediaType(tweet?.fileUrl);
+  }, [tweet?.fileUrl]);
 
   useEffect(() => {
-    if (tweet.likes.includes(user?.userId)) setIsLiked(true);
-    if (tweet.dislikes.includes(user?.userId)) setIsDisliked(true);
-    setLikeCount(tweet?.likes.length);
-    setDislikeCount(tweet?.dislikes.length);
-    setCommentCount(tweet?.comments?.length);
-    setComments(tweet?.comments);
-  }, [
-    isDisliked,
-    isLiked,
-    tweet.dislikes,
-    tweet.likes,
-    user?.userId,
-    commentCount,
-    tweet?.comments?.length,
-    tweet?.comments,
-  ]);
+    fetchTweet();
+  }, [interaction]);
 
-  const handleLikeClick = () => {
+  const handleLikeClick = async () => {
     if (!user) {
       navigate("/user/signin");
       return;
     }
-    if (!isLiked && !isDisliked) likeTweet();
-    else if (isLiked) removeLike();
-    else return;
+    try {
+      if (
+        !tweet?.likes?.includes(user?.userId) &&
+        !tweet?.dislikes?.includes(user?.userId)
+      ) {
+        await likeTweet();
+      } else if (tweet?.likes?.includes(user?.userId)) {
+        await removeLike();
+      }
+      setInteraction(!interaction);
+    } catch (error) {
+      console.log("error while liking tweet: ", error);
+    }
   };
-  const handleDislikeClick = () => {
+
+  const handleDislikeClick = async () => {
     if (!user) {
       navigate("/user/signin");
       return;
     }
-    if (!isDisliked && !isLiked) dislikeTweet();
-    else if (isDisliked) removeDislike();
-    else return;
+    try {
+      if (
+        !tweet?.dislikes?.includes(user?.userId) &&
+        !tweet?.likes?.includes(user?.userId)
+      ) {
+        await dislikeTweet();
+      } else if (tweet?.dislikes?.includes(user?.userId)) {
+        await removeDislike();
+      }
+      setInteraction(!interaction);
+    } catch (error) {
+      console.log("error while disliking tweet: ", error);
+    }
   };
 
   const likeTweet = async () => {
@@ -87,7 +101,6 @@ const TweetCard = ({ tweet }: any) => {
         }
       );
       console.log(res.data);
-      window.location.reload();
     } catch (error) {
       console.log("error while liking tweet from client: ", error);
     }
@@ -102,7 +115,6 @@ const TweetCard = ({ tweet }: any) => {
         }
       );
       console.log(res.data);
-      window.location.reload();
     } catch (error) {
       console.log("error while disliking tweet from client: ", error);
     }
@@ -117,7 +129,6 @@ const TweetCard = ({ tweet }: any) => {
         }
       );
       console.log(res.data);
-      window.location.reload();
     } catch (error) {
       console.log("error while removing like, from client: ", error);
     }
@@ -132,7 +143,6 @@ const TweetCard = ({ tweet }: any) => {
         }
       );
       console.log(res.data);
-      window.location.reload();
     } catch (error) {
       console.log("error while removing dislike, from client: ", error);
     }
@@ -156,7 +166,7 @@ const TweetCard = ({ tweet }: any) => {
       );
       if (res.data) {
         toast("comment posted", { icon: "✅" });
-        window.location.reload();
+        setInteraction(!interaction);
       }
     } catch (error) {
       console.log("error while posting comment");
@@ -171,7 +181,6 @@ const TweetCard = ({ tweet }: any) => {
         .then((res) => {
           console.log("Deleted Tweet");
           toast("Successfully Deleted Tweet", { icon: "✅" });
-          window.location.reload();
         });
     } catch (error) {
       console.log("error deleting tweet: ", error);
@@ -185,12 +194,16 @@ const TweetCard = ({ tweet }: any) => {
         <div className="flex flex-row items-center gap-3">
           <div className="relative w-8 h-8">
             <img
-              src={userPic ? userPic : "/placeholder.png"}
+              src={
+                tweet?.createdBy?.profileImageUrl
+                  ? tweet?.createdBy?.profileImageUrl
+                  : "/placeholder.png"
+              }
               alt="user pic"
               className="w-full h-full object-cover object-center rounded-full"
             />
           </div>
-          <span>{username}</span>
+          <span>{tweet?.createdBy?.username}</span>
         </div>
         <HiDotsVertical size={20} onClick={() => setShowMenu(!showMenu)} />
         {showMenu && (
@@ -230,18 +243,18 @@ const TweetCard = ({ tweet }: any) => {
         className={`text-sm  ${lineClamp ? "line-clamp-3" : ""}`}
         onClick={() => setLineClamp(!lineClamp)}
       >
-        {message}
+        {tweet?.message}
       </span>
-      {tweetMedia !== "" && mediaType === "image" ? (
+      {tweet?.fileUrl !== "" && mediaType === "image" ? (
         <img
-          src={tweetMedia}
+          src={tweet?.fileUrl}
           alt="tweet media"
           className="rounded-lg max-w-[400px] md:max-w-[38vw] w-full"
         />
       ) : (
-        tweetMedia !== "" && (
+        tweet?.fileUrl !== "" && (
           <video
-            src={tweetMedia}
+            src={tweet?.fileUrl}
             controls
             autoPlay
             muted
@@ -254,18 +267,26 @@ const TweetCard = ({ tweet }: any) => {
         {/* Like Section */}
         <div className="flex flex-row items-center gap-3">
           <div className="flex flex-row  gap-1">
-            <span className="mb-[-5px]">{likeCount}</span>
+            <span className="mb-[-5px]">{tweet?.likes?.length}</span>
             <IoMdThumbsUp
               size={22}
-              className={`${isLiked ? "text-blue-500" : "text-neutral-400"}`}
+              className={`${
+                tweet?.likes?.includes(user?.userId)
+                  ? "text-blue-500"
+                  : "text-neutral-400"
+              }`}
               onClick={handleLikeClick}
             />
           </div>
           <div className="flex flex-row  gap-1">
-            <span className="mb-[-5px]">{dislikeCount}</span>
+            <span className="mb-[-5px]">{tweet?.dislikes?.length}</span>
             <IoMdThumbsDown
               size={22}
-              className={`${isDisliked ? "text-red-500" : "text-neutral-400"}`}
+              className={`${
+                tweet?.dislikes?.includes(user?.userId)
+                  ? "text-red-500"
+                  : "text-neutral-400"
+              }`}
               onClick={handleDislikeClick}
             />
           </div>
@@ -273,7 +294,7 @@ const TweetCard = ({ tweet }: any) => {
         {/* Comment section */}
         <div>
           <div className="flex flex-row items-center gap-1">
-            <span>{commentCount}</span>
+            <span>{tweet?.comments?.length}</span>
             <MdModeComment
               size={22}
               onClick={() => setShowComments(!showComments)}
@@ -310,7 +331,7 @@ const TweetCard = ({ tweet }: any) => {
             </form>
             {/* Other's comments */}
             <div className="flex flex-col gap-3">
-              {comments?.map((comment, ind) => {
+              {tweet?.comments?.map((comment: any, ind: any) => {
                 return (
                   <div key={ind}>
                     <CommentCard comment={comment} />

@@ -33,7 +33,7 @@ const Home = () => {
   const fetchUserDetails = async () => {
     try {
       const res = await axios.get(
-        `https://twitter-topia-one.vercel.app/api/user/${user.userId}`
+        `https://twitter-topia-one.vercel.app/api/user/${user?.userId}`
       );
       // console.log(res.data);
       setCompUser(res.data);
@@ -81,13 +81,14 @@ const Home = () => {
     fetchUserDetails();
     fetchPostsFromPeopleYouFollow();
   }, [selectedTab]);
+
   return (
     <main className="flex flex-col gap-8 md:max-w-[40vw] mb-20">
       {selectedTab === "for-you" ? (
         tweets?.map((tweet, ind) => {
           return (
             <div key={ind}>
-              <TweetCard tweet={tweet} />
+              <TweetCard tweetId={tweet._id} />
             </div>
           );
         })
@@ -100,7 +101,7 @@ const Home = () => {
           followingPosts?.map((tweet, ind) => {
             return (
               <div key={ind}>
-                <TweetCard tweet={tweet} />
+                <TweetCard tweetId={tweet._id} />
               </div>
             );
           })
@@ -109,7 +110,7 @@ const Home = () => {
         posts?.map((tweet, ind) => {
           return (
             <div key={ind}>
-              <TweetCard tweet={tweet} />
+              <TweetCard tweetId={tweet._id} />
             </div>
           );
         })

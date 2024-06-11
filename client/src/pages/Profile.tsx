@@ -177,7 +177,7 @@ const Profile = () => {
                 {posts?.map((post, ind) => {
                   return (
                     <div key={ind} className="w-full">
-                      <TweetCard tweet={post} />
+                      <TweetCard tweetId={post._id} />
                     </div>
                   );
                 })}
