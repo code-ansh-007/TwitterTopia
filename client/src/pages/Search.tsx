@@ -3,10 +3,18 @@ import Layout from "../components/Layout";
 import { IoConstruct } from "react-icons/io5";
 import { IoSearch } from "react-icons/io5";
 import axios from "axios";
+import MiniProfileCard from "../components/MiniProfileCard";
+import TweetCard from "../components/TweetCard";
 
 const Search = () => {
   const [users, setUsers] = useState<any[]>([]);
   const [tweets, setTweets] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState<string>("");
+  const [selectedTab, setSelectedTab] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [searchUsers, setSearchUsers] = useState<any[]>([]);
+  const [searchTweets, setSearchTweets] = useState<any[]>([]);
+  const [showEmpty, setShowEmpty] = useState<boolean>(false);
 
   const fetchAllUsers = async () => {
     try {
@@ -14,7 +22,7 @@ const Search = () => {
         "https://twitter-topia-one.vercel.app/api/user"
       );
       if (res.data) {
-        console.log("fetched users");
+        // console.log("fetched users");
         setUsers(res.data);
       }
     } catch (error) {
@@ -28,7 +36,7 @@ const Search = () => {
         "https://twitter-topia-one.vercel.app/api/tweet"
       );
       if (res.data) {
-        console.log("fetched tweets");
+        // console.log("fetched tweets");
         setTweets(res.data);
       }
     } catch (error) {
@@ -41,14 +49,47 @@ const Search = () => {
     fetchAllTweets();
   }, []);
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    if (!searchText) {
+      return;
+    }
+    setSelectedTab("");
+    setShowEmpty(false);
+    setSearchUsers([]);
+    setSearchTweets([]);
+
+    const filteredUsers = users
+      .filter((user) =>
+        user.username.toLowerCase().includes(searchText.toLowerCase())
+      )
+      .map((user) => ({ ...user, searchType: "user" }));
+
+    console.log("Searched Users:- ", filteredUsers);
+    setSearchUsers(filteredUsers);
+
+    const filteredTweets = tweets
+      .filter((tweet) =>
+        tweet.message.toLowerCase().includes(searchText.toLowerCase())
+      )
+      .map((tweet) => ({ ...tweet, searchType: "tweet" }));
+    setSearchTweets(tweets);
+
+    if (filteredUsers.length === 0 && filteredTweets.length === 0) {
+      setShowEmpty(true);
+    }
+
+    if (filteredUsers.length > 0 && filteredTweets.length > 0) {
+      setSelectedTab("users");
+    } else if (filteredUsers.length > 0) {
+      setSelectedTab("users");
+    } else {
+      setSelectedTab("tweets");
+    }
+    console.log("Searched Tweets:- ", filteredTweets);
+  };
 
   return (
-    <main className="flex flex-col fixed inset-0 p-4 gap-4">
-      {/* <div className="flex flex-col items-center gap-2 ">
-        <IoConstruct size={100} className="text-neutral-300" />
-        <span className="text-neutral-400">Under Development</span>
-      </div> */}
+    <main className="flex flex-col p-4 gap-4 pb-[100px] md:max-w-[40vw]">
       <span className="font-playball text-2xl text-blue-400">
         Search TweeTopia
       </span>
@@ -57,11 +98,78 @@ const Search = () => {
           type="text"
           placeholder="Search anything"
           className="border-[1px] border-neutral-300 p-[13px] rounded-lg w-full outline-none text-sm text-neutral-600"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
         />
-        <div className="bg-blue-400 w-fit p-2 rounded-lg">
+        <button
+          onClick={handleSearch}
+          className="bg-blue-400 w-fit p-2 rounded-lg"
+        >
           <IoSearch size={30} className="text-white" />
-        </div>
+        </button>
       </div>
+      {/* Search REsults section */}
+      <main>
+        {searchUsers.length > 0 || searchTweets.length > 0 ? (
+          <div>
+            <div className="w-full flex flex-row items-center justify-between mb-5">
+              <span
+                className={`${
+                  selectedTab === "users"
+                    ? "border-b-[4px] border-blue-400"
+                    : "border-b-[4px] border-transparent"
+                } w-full text-center text-neutral-600`}
+                onClick={() => setSelectedTab("users")}
+              >
+                Users
+              </span>
+              <span
+                className={`${
+                  selectedTab === "tweets"
+                    ? "border-b-[4px] border-blue-400"
+                    : "border-b-[4px] border-transparent"
+                } w-full text-center text-neutral-600`}
+                onClick={() => {
+                  setSelectedTab("tweets");
+                }}
+              >
+                Tweets
+              </span>
+            </div>
+            {showEmpty ? (
+              <span>No such users or tweets.</span>
+            ) : selectedTab === "users" ? (
+              <div className="flex flex-col gap-5">
+                {searchUsers.length === 0 ? (
+                  <span>No such users.</span>
+                ) : (
+                  searchUsers?.map((user, ind) => {
+                    return (
+                      <div key={ind}>
+                        <MiniProfileCard person={user} />
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            ) : (
+              <div>
+                {searchTweets.length === 0 ? (
+                  <span>No such tweets.</span>
+                ) : (
+                  searchTweets?.map((tweet, ind) => {
+                    return (
+                      <div key={ind}>
+                        <TweetCard tweetId={tweet._id} />
+                      </div>
+                    );
+                  })
+                )}
+              </div>
+            )}
+          </div>
+        ) : null}
+      </main>
     </main>
   );
 };
