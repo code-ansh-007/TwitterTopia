@@ -45,6 +45,12 @@ const SignUp = () => {
         });
         return;
       }
+      if (username.length > 10) {
+        toast("Username cannot have more than 10 characters.", {
+          icon: "❗",
+        });
+        return;
+      }
       const formData = new FormData();
       formData.append("username", username);
       formData.append("password", password);
@@ -66,7 +72,13 @@ const SignUp = () => {
           console.log(res);
           navigate("/user/signin");
         });
-    } catch (error) {
+    } catch (error: any) {
+      console.log(error);
+      if (error?.response?.data === "username already exists") {
+        console.log("User Exists");
+        toast("User already exists please sign in.", { icon: "⚠️" });
+        return;
+      }
       console.log("Error while signing up client:- ", error);
     }
   };

@@ -40,8 +40,15 @@ const TweetCard = ({ tweetId }: any) => {
   const [interaction, setInteraction] = useState<boolean>(false);
 
   const checkMediaType = (tweetMedia: string) => {
-    if (tweetMedia?.endsWith(".jpg")) setMediaType("image");
-    else setMediaType("video");
+    if (
+      tweetMedia?.endsWith(".jpg") ||
+      tweetMedia?.endsWith(".png") ||
+      tweetMedia?.endsWith(".jpeg")
+    )
+      setMediaType("image");
+    else if (tweetMedia?.endsWith(".mp4") || tweetMedia?.endsWith(".mov"))
+      setMediaType("video");
+    else setMediaType("");
   };
 
   useEffect(() => {

@@ -52,8 +52,7 @@ export const handleUserSignUp = async (req, res, next) => {
           .status(400)
           .send("password and confirm password do not match");
       const usernameExists = await User.findOne({ username });
-      if (usernameExists)
-        return res.status(400).send("username already exists");
+      if (usernameExists) return res.status(400).json({ err: "user-exists" });
       else {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(confirmPassword, salt);
