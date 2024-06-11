@@ -64,7 +64,6 @@ const Search = () => {
       )
       .map((user) => ({ ...user, searchType: "user" }));
 
-    console.log("Searched Users:- ", filteredUsers);
     setSearchUsers(filteredUsers);
 
     const filteredTweets = tweets
@@ -72,7 +71,7 @@ const Search = () => {
         tweet.message.toLowerCase().includes(searchText.toLowerCase())
       )
       .map((tweet) => ({ ...tweet, searchType: "tweet" }));
-    setSearchTweets(tweets);
+    setSearchTweets(filteredTweets);
 
     if (filteredUsers.length === 0 && filteredTweets.length === 0) {
       setShowEmpty(true);
@@ -85,11 +84,10 @@ const Search = () => {
     } else {
       setSelectedTab("tweets");
     }
-    console.log("Searched Tweets:- ", filteredTweets);
   };
 
   return (
-    <main className="flex flex-col p-4 gap-4 pb-[100px] md:max-w-[40vw]">
+    <main className="flex flex-col p-2 gap-4 pb-20 md:max-w-[40vw]">
       <span className="font-playball text-2xl text-blue-400">
         Search TweeTopia
       </span>
@@ -103,13 +101,18 @@ const Search = () => {
         />
         <button
           onClick={handleSearch}
-          className="bg-blue-400 w-fit p-2 rounded-lg"
+          className="bg-blue-400 w-fit p-2 rounded-lg outline-none active:scale-105 transition transform duration-300 cursor-pointer"
         >
           <IoSearch size={30} className="text-white" />
         </button>
       </div>
       {/* Search REsults section */}
-      <main>
+      <main className="w-full">
+        {showEmpty && (
+          <span className="text-center w-full text-neutral-600">
+            No such users or tweets.
+          </span>
+        )}
         {searchUsers.length > 0 || searchTweets.length > 0 ? (
           <div>
             <div className="w-full flex flex-row items-center justify-between mb-5">
@@ -139,9 +142,11 @@ const Search = () => {
             {showEmpty ? (
               <span>No such users or tweets.</span>
             ) : selectedTab === "users" ? (
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-5 w-full">
                 {searchUsers.length === 0 ? (
-                  <span>No such users.</span>
+                  <span className="text-center w-full text-neutral-600">
+                    No such users.
+                  </span>
                 ) : (
                   searchUsers?.map((user, ind) => {
                     return (
@@ -153,9 +158,11 @@ const Search = () => {
                 )}
               </div>
             ) : (
-              <div>
+              <div className="w-full flex">
                 {searchTweets.length === 0 ? (
-                  <span>No such tweets.</span>
+                  <span className="text-center w-full text-neutral-600">
+                    No such tweets.
+                  </span>
                 ) : (
                   searchTweets?.map((tweet, ind) => {
                     return (
