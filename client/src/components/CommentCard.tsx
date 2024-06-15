@@ -18,7 +18,6 @@ const CommentCard = ({ comment }: any) => {
         })
         .then((res) => {
           toast("Comment Deleted", { icon: "✅" });
-          window.location.reload();
         });
     } catch (error) {
       console.log("Error while deleting comment from client: ", error);

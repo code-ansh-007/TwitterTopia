@@ -57,7 +57,7 @@ const TweetCard = ({ tweetId }: any) => {
 
   useEffect(() => {
     fetchTweet();
-  }, [interaction]);
+  }, [interaction, tweet?.comments]);
 
   const handleLikeClick = async () => {
     if (!user) {
@@ -258,17 +258,15 @@ const TweetCard = ({ tweetId }: any) => {
           alt="tweet media"
           className="rounded-lg max-w-[400px] md:max-w-[38vw] w-full"
         />
-      ) : (
-        tweet?.fileUrl !== "" && (
-          <video
-            src={tweet?.fileUrl}
-            controls
-            autoPlay
-            muted
-            className="rounded-lg md:max-w-[38vw]"
-          ></video>
-        )
-      )}
+      ) : tweet?.fileUrl !== "" && mediaType === "video" ? (
+        <video
+          src={tweet?.fileUrl}
+          controls
+          autoPlay
+          muted
+          className="rounded-lg md:max-w-[38vw]"
+        ></video>
+      ) : null}
       {/* Interactive section below */}
       <section className="flex flex-row items-center gap-4 w-full">
         {/* Like Section */}
@@ -338,13 +336,16 @@ const TweetCard = ({ tweetId }: any) => {
             </form>
             {/* Other's comments */}
             <div className="flex flex-col gap-3">
-              {tweet?.comments?.map((comment: any, ind: any) => {
-                return (
-                  <div key={ind}>
-                    <CommentCard comment={comment} />
-                  </div>
-                );
-              })}
+              {tweet?.comments
+                ?.slice()
+                .reverse()
+                .map((comment: any, ind: any) => {
+                  return (
+                    <div key={ind}>
+                      <CommentCard comment={comment} />
+                    </div>
+                  );
+                })}
             </div>
           </section>
         </main>
